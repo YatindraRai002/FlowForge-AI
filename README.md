@@ -86,15 +86,7 @@ That's it!
 - Agent data: Edit `src/data/dummyData.js`
 - Pages: Check `src/pages/`
 
-## What's NOT Included
 
-This is frontend only:
-- ❌ No real backend
-- ❌ No database
-- ❌ Uses dummy data for demo
-- ✅ Ready to connect your own backend
-
-## Need Help?
 
 Check `QUICKSTART.md` for detailed step-by-step guide.
 
