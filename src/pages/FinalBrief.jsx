@@ -54,7 +54,7 @@ const FinalBrief = () => {
         <div className="absolute top-1/3 right-1/3 w-96 h-96 bg-neon-purple/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-5xl mx-auto px-6 py-20">
+      <div className="relative responsive-container section-padding">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -296,7 +296,7 @@ const FinalBrief = () => {
           <p className="text-gray-400 mb-4">
             Need to make changes? Create a new campaign or modify your inputs.
           </p>
-          <Button variant="secondary" onClick={() => window.location.href = '/create'}>
+          <Button variant="secondary" onClick={() => window.location.href = '/#/create'}>
             Create New Campaign
           </Button>
         </motion.div>

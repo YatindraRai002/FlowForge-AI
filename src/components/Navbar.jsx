@@ -1,11 +1,9 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Moon, Sun, Sparkles } from 'lucide-react'
-import { useTheme } from '../context/ThemeContext'
 import { motion } from 'framer-motion'
 import Button from './Button'
+import AnimatedLogo from './AnimatedLogo'
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme()
   const location = useLocation()
 
   const isActive = (path) => location.pathname === path
@@ -15,9 +13,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="bg-gradient-to-r from-neon-blue to-neon-purple p-2 rounded-xl group-hover:shadow-neon-blue transition-all">
-              <Sparkles className="w-6 h-6 text-white" />
-            </div>
+            <AnimatedLogo />
             <span className="text-xl font-bold text-gradient">
               Multi-Agent Automator
             </span>
@@ -34,6 +30,16 @@ const Navbar = () => {
                 }`}
               >
                 Home
+              </Link>
+              <Link 
+                to="/dashboard" 
+                className={`text-sm font-medium transition-colors ${
+                  isActive('/dashboard') 
+                    ? 'text-neon-blue' 
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Dashboard
               </Link>
               <Link 
                 to="/create" 
@@ -55,20 +61,17 @@ const Navbar = () => {
               >
                 Workflow
               </Link>
+              <Link 
+                to="/pricing" 
+                className={`text-sm font-medium transition-colors ${
+                  isActive('/pricing') 
+                    ? 'text-neon-blue' 
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Pricing
+              </Link>
             </div>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className="p-2 rounded-xl glass hover:bg-white/10 transition-colors"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-5 h-5 text-yellow-400" />
-              ) : (
-                <Moon className="w-5 h-5 text-blue-400" />
-              )}
-            </motion.button>
 
             <Link to="/create">
               <Button size="sm">Get Started</Button>

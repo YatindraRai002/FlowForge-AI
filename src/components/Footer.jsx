@@ -1,4 +1,5 @@
-import { Github, Twitter, Linkedin } from 'lucide-react'
+import { Github } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -15,22 +16,12 @@ const Footer = () => {
             </p>
             <div className="flex items-center gap-4">
               <a 
-                href="#" 
-                className="p-2 glass rounded-lg hover:bg-white/10 transition-colors"
-              >
-                <Twitter className="w-5 h-5 text-gray-400 hover:text-neon-blue transition-colors" />
-              </a>
-              <a 
-                href="#" 
+                href="https://github.com/DarshilRaj_Git" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="p-2 glass rounded-lg hover:bg-white/10 transition-colors"
               >
                 <Github className="w-5 h-5 text-gray-400 hover:text-neon-blue transition-colors" />
-              </a>
-              <a 
-                href="#" 
-                className="p-2 glass rounded-lg hover:bg-white/10 transition-colors"
-              >
-                <Linkedin className="w-5 h-5 text-gray-400 hover:text-neon-blue transition-colors" />
               </a>
             </div>
           </div>
@@ -39,24 +30,19 @@ const Footer = () => {
             <h4 className="font-semibold text-white mb-4">Product</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
+                <Link to="/product" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
                   Features
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
+                <Link to="/pricing" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
-                  Documentation
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
-                  API
-                </a>
+                <Link to="/product" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
+                  Why Choose Us
+                </Link>
               </li>
             </ul>
           </div>
@@ -65,24 +51,19 @@ const Footer = () => {
             <h4 className="font-semibold text-white mb-4">Company</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
+                <Link to="/company" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
                   About
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
+                <Link to="/company" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
                   Blog
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
+                <Link to="/company" className="text-sm text-gray-400 hover:text-neon-blue transition-colors">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

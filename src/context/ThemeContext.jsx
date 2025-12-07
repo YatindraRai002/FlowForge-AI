@@ -11,20 +11,18 @@ export const useTheme = () => {
 }
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme')
-    return savedTheme || 'dark'
-  })
+  const [theme, setTheme] = useState('dark')
 
   useEffect(() => {
     const root = window.document.documentElement
     root.classList.remove('light', 'dark')
-    root.classList.add(theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
+    root.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+  }, [])
 
+  // Disable theme toggle - always use dark mode
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark')
+    setTheme('dark')
   }
 
   return (
@@ -33,3 +31,5 @@ export const ThemeProvider = ({ children }) => {
     </ThemeContext.Provider>
   )
 }
+
+export default ThemeProvider

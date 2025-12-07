@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTheme } from '../context/ThemeContext'
 
 const Button = ({ 
   children, 
@@ -9,12 +10,17 @@ const Button = ({
   className = '',
   ...props 
 }) => {
+  const { theme } = useTheme()
   const baseStyles = 'font-semibold rounded-2xl transition-all duration-300 flex items-center justify-center gap-2'
   
   const variants = {
     primary: 'bg-gradient-to-r from-neon-blue to-neon-purple text-white hover:shadow-neon-blue disabled:opacity-50',
-    secondary: 'glass text-white hover:bg-white/10 border border-white/20',
-    ghost: 'bg-transparent text-neon-blue hover:bg-neon-blue/10',
+    secondary: theme === 'dark' 
+      ? 'glass text-white hover:bg-white/10 border border-white/20' 
+      : 'bg-white text-gray-900 hover:bg-gray-100 border border-gray-300 shadow-sm',
+    ghost: theme === 'dark'
+      ? 'bg-transparent text-neon-blue hover:bg-neon-blue/10'
+      : 'bg-transparent text-neon-blue hover:bg-neon-blue/20',
     danger: 'bg-gradient-to-r from-red-500 to-pink-500 text-white hover:shadow-neon-pink'
   }
   
