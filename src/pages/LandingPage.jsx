@@ -178,16 +178,90 @@ const LandingPage = () => {
               transition={{ delay: i * 0.2 }}
               className="relative"
             >
-              <div className="text-8xl font-bold text-neon-blue/10 absolute -top-8 -left-4">
-                {item.step}
-              </div>
-              <Card variant="glass" className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-                <p className="text-gray-400">{item.description}</p>
+              <Card variant="glass" className="relative z-10 pt-8">
+                <div className="text-6xl font-bold text-neon-blue/20 absolute top-2 right-4">
+                  {item.step}
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3 relative z-20">{item.title}</h3>
+                <p className="text-gray-400 relative z-20">{item.description}</p>
               </Card>
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Pricing Preview Section */}
+      <section className="relative max-w-7xl mx-auto px-6 py-20">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Plans That <span className="text-gradient">Scale With You</span>
+          </h2>
+          <p className="text-xl text-gray-400">Start free, upgrade as you grow</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { name: "Starter", price: "2,999", campaigns: "10", popular: false },
+            { name: "Professional", price: "7,999", campaigns: "50", popular: true },
+            { name: "Enterprise", price: "Custom", campaigns: "∞", popular: false }
+          ].map((plan, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card 
+                variant="glass" 
+                className={`text-center relative ${
+                  plan.popular ? 'border-2 border-neon-purple shadow-neon-purple' : ''
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-gradient-to-r from-neon-purple to-neon-pink px-3 py-1 rounded-full text-xs font-semibold text-white">
+                      Popular
+                    </span>
+                  </div>
+                )}
+                <h3 className="text-xl font-bold text-white mb-4 mt-2">{plan.name}</h3>
+                <div className="mb-4">
+                  {plan.price === "Custom" ? (
+                    <div className="text-3xl font-bold text-gradient">Custom</div>
+                  ) : (
+                    <div>
+                      <span className="text-4xl font-bold text-gradient">₹{plan.price}</span>
+                      <span className="text-gray-400">/month</span>
+                    </div>
+                  )}
+                </div>
+                <div className="text-gray-400 mb-6">
+                  <span className="text-2xl font-bold text-neon-blue">{plan.campaigns}</span> campaigns/month
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-8"
+        >
+          <Link to="/pricing">
+            <Button variant="secondary" size="lg">
+              View All Plans & Features
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
+        </motion.div>
       </section>
 
       {/* CTA Section */}
@@ -201,12 +275,19 @@ const LandingPage = () => {
             <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
               Join thousands of marketers who've automated their way to success
             </p>
-            <Link to="/create">
-              <Button size="lg">
-                Start Free Trial
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/create">
+                <Button size="lg">
+                  Start Free Trial
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link to="/pricing">
+                <Button variant="secondary" size="lg">
+                  View Pricing
+                </Button>
+              </Link>
+            </div>
           </div>
         </Card>
       </section>

@@ -7,7 +7,7 @@ export const agentWorkflowData = {
       marketTrends: [
         "AI-powered productivity tools showing 300% growth in 2024",
         "Enterprise adoption of multi-agent systems increasing",
-        "Workflow automation market valued at $25B"
+        "Workflow automation market valued at ₹2,100 Cr"
       ],
       competitors: [
         "Zapier - General automation, lacks AI agents",
@@ -110,21 +110,15 @@ export const finalBriefData = {
   channels: [
     {
       name: "LinkedIn Ads",
-      budget: "$5,000/month",
+      budget: "₹4,00,000/month",
       goal: "Lead generation - target B2B marketers",
       creative: "Carousel showing before/after workflow automation"
     },
     {
       name: "Twitter/X",
-      budget: "Organic + $1,000 promoted",
+      budget: "Organic + ₹80,000 promoted",
       goal: "Thought leadership and community building",
       creative: "Demo videos, agent personality content"
-    },
-    {
-      name: "Product Hunt",
-      budget: "$500",
-      goal: "Launch day awareness and early adopters",
-      creative: "Interactive demo, founder story"
     }
   ],
   postingPlan: {

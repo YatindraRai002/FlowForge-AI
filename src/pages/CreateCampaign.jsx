@@ -18,10 +18,8 @@ const CreateCampaign = () => {
     'Twitter/X',
     'Instagram',
     'Facebook',
-    'TikTok',
     'YouTube',
-    'Email',
-    'Product Hunt'
+    'Email'
   ]
 
   const handleSubmit = (e) => {
@@ -47,21 +45,21 @@ const CreateCampaign = () => {
         <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-neon-blue/20 rounded-full blur-3xl animate-float" />
       </div>
 
-      <div className="relative max-w-4xl mx-auto px-6 py-20">
+      <div className="relative responsive-container section-padding">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 glass rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-neon-blue" />
             <span className="text-sm font-medium text-gray-300">Campaign Generator</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
             Create Your <span className="text-gradient">Campaign</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto">
             Tell us about your product and watch our AI agents craft a complete marketing strategy
           </p>
         </motion.div>
@@ -85,7 +83,7 @@ const CreateCampaign = () => {
                 value={formData.product}
                 onChange={(e) => setFormData({ ...formData, product: e.target.value })}
                 placeholder="e.g., AI-powered task management app"
-                className="w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-blue transition-all border border-white/10 hover:border-neon-blue/50"
+                className="w-full px-6 py-4 bg-dark-800/50 border border-neon-blue/30 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-neon-blue transition-all hover:border-neon-blue/50 backdrop-blur-sm"
                 required
               />
             </motion.div>
@@ -105,7 +103,7 @@ const CreateCampaign = () => {
                 value={formData.audience}
                 onChange={(e) => setFormData({ ...formData, audience: e.target.value })}
                 placeholder="e.g., Busy professionals aged 25-40"
-                className="w-full px-6 py-4 glass rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-purple transition-all border border-white/10 hover:border-neon-purple/50"
+                className="w-full px-6 py-4 bg-dark-800/50 border border-neon-purple/30 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-purple focus:border-neon-purple transition-all hover:border-neon-purple/50 backdrop-blur-sm"
                 required
               />
             </motion.div>
@@ -131,16 +129,35 @@ const CreateCampaign = () => {
                     className={`px-4 py-3 rounded-xl font-medium transition-all ${
                       formData.channels.includes(channel)
                         ? 'bg-gradient-to-r from-neon-blue to-neon-purple text-white shadow-neon-blue'
-                        : 'glass text-gray-400 hover:text-white border border-white/10 hover:border-neon-blue/50'
+                        : 'bg-dark-800/50 text-gray-300 hover:text-white border border-gray-600 hover:border-neon-blue/50'
                     }`}
                   >
                     {channel}
                   </motion.button>
                 ))}
               </div>
-              <p className="text-sm text-gray-500 mt-3">
+              <p className="text-sm text-gray-400 mt-3">
                 Selected: {formData.channels.length > 0 ? formData.channels.join(', ') : 'None'}
               </p>
+            </motion.div>
+
+            {/* Process Explanation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="glass rounded-xl p-4 border border-neon-blue/20"
+            >
+              <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-neon-blue" />
+                What happens next?
+              </h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Our AI agents will research your market and competition</li>
+                <li>• They'll create compelling copy and creative direction</li>
+                <li>• You'll see the workflow progress in real-time</li>
+                <li>• Receive a complete marketing brief when finished</li>
+              </ul>
             </motion.div>
 
             {/* Submit Button */}

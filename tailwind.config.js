@@ -9,16 +9,25 @@ export default {
     extend: {
       colors: {
         neon: {
-          blue: '#00D9FF',
-          purple: '#B537F2',
-          pink: '#FF2E97',
-          green: '#00FF94',
+          blue: '#00E5FF',
+          purple: '#C147FF',
+          pink: '#FF3BA8',
+          green: '#00FFB3',
+          cyan: '#00FFFF',
+          orange: '#FF6B35',
+          yellow: '#FFD93D',
         },
         dark: {
           900: '#0A0A0F',
           800: '#121218',
           700: '#1A1A24',
           600: '#24242F',
+        },
+        light: {
+          100: '#F9FAFB',
+          200: '#F3F4F6',
+          300: '#E5E7EB',
+          400: '#D1D5DB',
         }
       },
       fontFamily: {
