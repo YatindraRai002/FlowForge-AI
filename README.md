@@ -92,4 +92,4 @@ Check `QUICKSTART.md` for detailed step-by-step guide.
 
 ---
 
-Built with React + TailwindCSS + Framer Motion 🎨
+Built with React + TailwindCSS + Framer Motion 
