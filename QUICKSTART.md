@@ -58,11 +58,11 @@ VITE v7.2.6  ready in 800 ms
 2. Click "Generate Workflow"
 
 ### Watch the Workflow
-- You'll see 4 agents light up one by one
+- You'll see 5 agents light up one by one
 - Each takes a few seconds
 - Click on each card to see what they found
 - Progress bar fills up
-- Wait about 12 seconds total
+- Wait about 15 seconds total
 
 ### Final Brief
 - See the complete marketing brief

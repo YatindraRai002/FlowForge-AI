@@ -1,61 +1,90 @@
 export const agentWorkflowData = {
-  research: {
-    title: "Research Agent",
+  planner: {
+    title: "Planner Agent",
     status: "done",
     icon: "Search",
     output: {
-      marketTrends: [
-        "AI-powered productivity tools showing 300% growth in 2024",
-        "Enterprise adoption of multi-agent systems increasing",
-        "Workflow automation market valued at ₹2,100 Cr"
+      plan: [
+        "Analyze user request for marketing brief creation",
+        "Identify key requirements: product, audience, channels",
+        "Create structured workflow for other agents",
+        "Define success criteria and deliverables"
       ],
-      competitors: [
-        "Zapier - General automation, lacks AI agents",
-        "Make.com - Visual automation, no intelligent routing",
-        "n8n - Open source, requires technical expertise"
-      ],
-      insights: "Market gap exists for visual, AI-driven multi-agent workflows accessible to non-technical users."
+      approach: "Sequential multi-agent processing with feedback loops",
+      timeline: "Estimated completion: 15 seconds"
     }
   },
-  copywriter: {
-    title: "Copywriter Agent",
+  researcher: {
+    title: "Researcher Agent",
     status: "running",
+    icon: "Search",
+    output: {
+      requestData: "Gathering relevant information based on the plan",
+      sources: [
+        "Industry reports and market analysis",
+        "Competitor websites and marketing materials",
+        "Customer reviews and feedback",
+        "Social media trends and discussions"
+      ],
+      methodology: "Systematic data collection from trusted sources",
+      findings: "Comprehensive dataset ready for content creation"
+    }
+  },
+  writer: {
+    title: "Writer Agent",
+    status: "pending",
     icon: "PenTool",
     output: {
-      headline: "Automate Smarter, Not Harder",
-      tagline: "Your AI Team Works While You Sleep",
-      adCopy: [
-        "Stop wasting 15+ hours per week on repetitive tasks. Our multi-agent AI system handles research, content creation, and creative direction automatically.",
-        "Unlike basic automation tools, our intelligent agents collaborate, make decisions, and deliver production-ready marketing briefs in minutes, not days.",
-        "Join 10,000+ marketers who've reclaimed their time and 10x their output."
+      draftStatus: "Produces initial drafts using collected information",
+      contentTypes: [
+        "Product descriptions and value propositions",
+        "Marketing copy for various channels",
+        "Technical specifications and features",
+        "Call-to-action statements"
       ],
-      ctaText: "Start Your Free Trial"
+      styleGuide: "Follows brand voice and tone guidelines",
+      draftVersion: "Initial draft ready for review"
     }
   },
-  artDirector: {
-    title: "Art Director Agent",
+  critic: {
+    title: "Critic Agent",
     status: "pending",
-    icon: "Palette",
+    icon: "RotateCcw",
     output: {
-      visualTheme: "Futuristic Tech Command Center",
-      colorPalette: ["#00D9FF", "#B537F2", "#FF2E97", "#00FF94"],
-      creativePrompts: [
-        "Hero image: Glowing neural network connections forming a workflow diagram, neon blue and purple gradients",
-        "Dashboard UI: Dark glassmorphic cards with animated agent avatars collaborating in real-time",
-        "Social media: Animated GIF showing agents passing work seamlessly through pipeline"
+      evaluation: "Evaluates draft quality, scores it, and triggers rewrite cycles if needed",
+      score: "8.5/10 - Good overall quality",
+      strengths: [
+        "Clear value proposition and messaging",
+        "Consistent tone aligned with brand guidelines",
+        "Effective use of persuasive language"
       ],
-      styleGuide: "Modern minimalistic with neon accents, rounded corners, soft glows"
+      areasForImprovement: [
+        "Add more specific statistics and data points",
+        "Include stronger emotional appeal",
+        "Enhance call-to-action urgency"
+      ],
+      recommendation: "Proceed to next stage with minor revisions"
     }
   },
-  manager: {
-    title: "Manager Agent",
+  assembler: {
+    title: "Assembler Agent",
     status: "pending",
     icon: "Briefcase",
     output: {
-      overview: "Complete marketing brief generated",
-      timeline: "2-week sprint",
-      deliverables: ["Ad creatives", "Landing page copy", "Social media kit"],
-      nextSteps: ["Review brief", "Approve budget", "Launch campaign"]
+      finalization: "Performs final polishing, formatting, and output assembly",
+      tasksCompleted: [
+        "Grammar and spelling check",
+        "Formatting consistency across all sections",
+        "Integration of all content elements",
+        "Final quality assurance review"
+      ],
+      deliverables: [
+        "Complete marketing brief document",
+        "Channel-specific content variations",
+        "Visual asset recommendations",
+        "Implementation timeline and next steps"
+      ],
+      status: "Ready for delivery"
     }
   }
 }

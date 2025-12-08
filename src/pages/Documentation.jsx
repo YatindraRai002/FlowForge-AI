@@ -19,10 +19,11 @@ const Documentation = () => {
         <h3>What Are Multi-Agent Workflows?</h3>
         <p>Unlike traditional single-AI solutions, our system employs multiple specialized agents, each with distinct capabilities:</p>
         <ul>
-          <li><strong>Research Agent</strong>: Gathers market intelligence and competitive analysis</li>
-          <li><strong>Copywriter Agent</strong>: Crafts compelling marketing copy and messaging</li>
-          <li><strong>Art Director Agent</strong>: Designs visual concepts and creative direction</li>
-          <li><strong>Manager Agent</strong>: Coordinates workflow and ensures quality delivery</li>
+          <li><strong>Planner Agent</strong>: Understands user requests and creates execution plans</li>
+          <li><strong>Researcher Agent</strong>: Gathers relevant information based on the plan</li>
+          <li><strong>Writer Agent</strong>: Produces initial drafts using collected information</li>
+          <li><strong>Critic Agent</strong>: Evaluates draft quality, scores it, and triggers rewrite cycles if needed</li>
+          <li><strong>Assembler Agent</strong>: Performs final polishing, formatting, and output assembly</li>
         </ul>
         
         <h3>How It Works</h3>
@@ -136,17 +137,20 @@ const Documentation = () => {
       content: `
         <p>Each agent type brings unique skills to your marketing workflows:</p>
         
-        <h3>Research Agent</h3>
-        <p>Gathers competitive intelligence, market trends, and audience insights to inform strategy.</p>
+        <h3>Planner Agent</h3>
+        <p>Understands user requests and creates execution plans.</p>
         
-        <h3>Copywriter Agent</h3>
-        <p>Creates compelling copy tailored to different channels, audiences, and brand voices.</p>
+        <h3>Researcher Agent</h3>
+        <p>Gathers relevant information based on the plan.</p>
         
-        <h3>Art Director Agent</h3>
-        <p>Develops visual concepts, designs creative assets, and maintains brand consistency.</p>
+        <h3>Writer Agent</h3>
+        <p>Produces initial drafts using collected information.</p>
         
-        <h3>Manager Agent</h3>
-        <p>Coordinates workflow, ensures quality standards, and delivers final outputs.</p>
+        <h3>Critic Agent</h3>
+        <p>Evaluates draft quality, scores it, and triggers rewrite cycles if needed.</p>
+        
+        <h3>Assembler Agent</h3>
+        <p>Performs final polishing, formatting, and output assembly.</p>
       `
     },
     customize: {

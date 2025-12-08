@@ -8,12 +8,12 @@ const Layout = ({ children }) => {
   const { theme } = useTheme()
   
   return (
-    <div className={`min-h-screen h-full transition-colors duration-300 ${theme === 'dark' ? 'bg-dark-900' : 'bg-gray-50'}`}>
+    <div id="layout-container" className={`min-h-screen w-full transition-colors duration-300 ${theme === 'dark' ? 'bg-dark-900' : 'bg-gray-50'}`}>
       <BackgroundAnimation />
-      <div className="relative z-10 flex flex-col min-h-screen h-full w-full">
+      <div className="relative z-10 flex flex-col min-h-screen w-full">
         <Navbar />
         <main className="flex-grow w-full">
-          <div className="h-full w-full">
+          <div className="w-full">
             {children}
           </div>
         </main>

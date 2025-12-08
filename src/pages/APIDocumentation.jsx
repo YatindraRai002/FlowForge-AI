@@ -48,14 +48,14 @@ const APIDocumentation = () => {
           path: '/api/agents',
           description: 'List all available agent types',
           parameters: [],
-          response: '{ "agents": [{ "id": "research", "name": "Research Agent", "capabilities": [...] }] }'
+          response: '{ "agents": [{ "id": "planner", "name": "Planner Agent", "capabilities": [...] }] }'
         },
         {
           method: 'GET',
           path: '/api/agents/{id}/status',
           description: 'Get the current status of a specific agent',
           parameters: [],
-          response: '{ "agentId": "research", "status": "idle", "currentTask": null }'
+          response: '{ "agentId": "planner", "status": "idle", "currentTask": null }'
         }
       ]
     },

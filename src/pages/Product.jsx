@@ -25,24 +25,28 @@ const Product = () => {
               Instead of spending countless hours on research, copywriting, and creative direction, our AI team does it for you.
             </p>
             <p className="text-gray-300 mb-4">
-              Our system consists of four specialized AI agents that work together in real-time:
+              Our system consists of five specialized AI agents that work together in real-time:
             </p>
             <ul className="space-y-2 ml-4">
               <li className="flex items-start">
                 <span className="text-neon-blue mr-2">•</span>
-                <span className="text-gray-300"><strong>Research Agent:</strong> Gathers market insights and competitor analysis</span>
+                <span className="text-gray-300"><strong>Planner Agent:</strong> Understands user requests and creates execution plans</span>
               </li>
               <li className="flex items-start">
                 <span className="text-neon-blue mr-2">•</span>
-                <span className="text-gray-300"><strong>Copywriter Agent:</strong> Crafts compelling ad copy and messaging</span>
+                <span className="text-gray-300"><strong>Researcher Agent:</strong> Gathers relevant information based on the plan</span>
               </li>
               <li className="flex items-start">
                 <span className="text-neon-blue mr-2">•</span>
-                <span className="text-gray-300"><strong>Art Director Agent:</strong> Develops visual themes and creative direction</span>
+                <span className="text-gray-300"><strong>Writer Agent:</strong> Produces initial drafts using collected information</span>
               </li>
               <li className="flex items-start">
                 <span className="text-neon-blue mr-2">•</span>
-                <span className="text-gray-300"><strong>Manager Agent:</strong> Coordinates workflow and delivers final briefs</span>
+                <span className="text-gray-300"><strong>Critic Agent:</strong> Evaluates draft quality, scores it, and triggers rewrite cycles if needed</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-neon-blue mr-2">•</span>
+                <span className="text-gray-300"><strong>Assembler Agent:</strong> Performs final polishing, formatting, and output assembly</span>
               </li>
             </ul>
           </Card>

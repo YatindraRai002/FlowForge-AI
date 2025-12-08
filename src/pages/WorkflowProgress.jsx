@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { ArrowRight, CheckCircle, Play, Sparkles, Search, PenTool, Palette, Briefcase } from 'lucide-react'
+import { ArrowRight, CheckCircle, Play, Sparkles, Search, PenTool, Palette, Briefcase, RotateCcw } from 'lucide-react'
 import Button from '../components/Button'
 import AgentStatus from '../components/AgentStatus'
 import { agentWorkflowData } from '../data/dummyData'
@@ -10,10 +10,11 @@ const WorkflowProgress = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [agents, setAgents] = useState({
-    research: { ...agentWorkflowData.research, status: 'pending' },
-    copywriter: { ...agentWorkflowData.copywriter, status: 'pending' },
-    artDirector: { ...agentWorkflowData.artDirector, status: 'pending' },
-    manager: { ...agentWorkflowData.manager, status: 'pending' }
+    planner: { ...agentWorkflowData.planner, status: 'pending' },
+    researcher: { ...agentWorkflowData.researcher, status: 'pending' },
+    writer: { ...agentWorkflowData.writer, status: 'pending' },
+    critic: { ...agentWorkflowData.critic, status: 'pending' },
+    assembler: { ...agentWorkflowData.assembler, status: 'pending' }
   })
   const [expandedAgent, setExpandedAgent] = useState(null)
   const [allComplete, setAllComplete] = useState(false)
@@ -48,14 +49,16 @@ const WorkflowProgress = () => {
     
     // Simulate workflow progression
     const timeline = [
-      { delay: 1000, agent: 'research', status: 'running' },
-      { delay: 3000, agent: 'research', status: 'done' },
-      { delay: 3500, agent: 'copywriter', status: 'running' },
-      { delay: 6000, agent: 'copywriter', status: 'done' },
-      { delay: 6500, agent: 'artDirector', status: 'running' },
-      { delay: 9000, agent: 'artDirector', status: 'done' },
-      { delay: 9500, agent: 'manager', status: 'running' },
-      { delay: 12000, agent: 'manager', status: 'done' }
+      { delay: 1000, agent: 'planner', status: 'running' },
+      { delay: 3000, agent: 'planner', status: 'done' },
+      { delay: 3500, agent: 'researcher', status: 'running' },
+      { delay: 6000, agent: 'researcher', status: 'done' },
+      { delay: 6500, agent: 'writer', status: 'running' },
+      { delay: 9000, agent: 'writer', status: 'done' },
+      { delay: 9500, agent: 'critic', status: 'running' },
+      { delay: 12000, agent: 'critic', status: 'done' },
+      { delay: 12500, agent: 'assembler', status: 'running' },
+      { delay: 15000, agent: 'assembler', status: 'done' }
     ]
 
     timeline.forEach(({ delay, agent, status }) => {
@@ -65,14 +68,14 @@ const WorkflowProgress = () => {
           [agent]: { ...prev[agent], status }
         }))
         
-        if (agent === 'manager' && status === 'done') {
+        if (agent === 'assembler' && status === 'done') {
           setAllComplete(true)
         }
       }, delay)
     })
   }
 
-  const agentKeys = ['research', 'copywriter', 'artDirector', 'manager']
+  const agentKeys = ['planner', 'researcher', 'writer', 'critic', 'assembler']
   const completedCount = agentKeys.filter(key => agents[key].status === 'done').length
 
   return (
@@ -106,30 +109,36 @@ const WorkflowProgress = () => {
             <p className="text-gray-300 text-sm">
               Our AI agents work together to create your marketing strategy. Each agent specializes in a different area:
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-3">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
               <div className="text-center">
                 <div className="w-8 h-8 rounded-full bg-neon-blue/20 flex items-center justify-center mx-auto mb-1">
                   <Search className="w-4 h-4 text-neon-blue" />
                 </div>
-                <p className="text-xs text-gray-400">Research</p>
+                <p className="text-xs text-gray-400">Planning</p>
               </div>
               <div className="text-center">
                 <div className="w-8 h-8 rounded-full bg-neon-purple/20 flex items-center justify-center mx-auto mb-1">
-                  <PenTool className="w-4 h-4 text-neon-purple" />
+                  <Search className="w-4 h-4 text-neon-purple" />
                 </div>
-                <p className="text-xs text-gray-400">Copywriting</p>
+                <p className="text-xs text-gray-400">Research</p>
               </div>
               <div className="text-center">
                 <div className="w-8 h-8 rounded-full bg-neon-pink/20 flex items-center justify-center mx-auto mb-1">
-                  <Palette className="w-4 h-4 text-neon-pink" />
+                  <PenTool className="w-4 h-4 text-neon-pink" />
                 </div>
-                <p className="text-xs text-gray-400">Design</p>
+                <p className="text-xs text-gray-400">Writing</p>
               </div>
               <div className="text-center">
                 <div className="w-8 h-8 rounded-full bg-neon-green/20 flex items-center justify-center mx-auto mb-1">
-                  <Briefcase className="w-4 h-4 text-neon-green" />
+                  <RotateCcw className="w-4 h-4 text-neon-green" />
                 </div>
-                <p className="text-xs text-gray-400">Management</p>
+                <p className="text-xs text-gray-400">Reviewing</p>
+              </div>
+              <div className="text-center">
+                <div className="w-8 h-8 rounded-full bg-blue-400/20 flex items-center justify-center mx-auto mb-1">
+                  <Briefcase className="w-4 h-4 text-blue-400" />
+                </div>
+                <p className="text-xs text-gray-400">Assembly</p>
               </div>
             </div>
           </div>

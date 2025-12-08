@@ -153,8 +153,10 @@ const CreateCampaign = () => {
                 What happens next?
               </h3>
               <ul className="text-sm text-gray-300 space-y-1">
-                <li>• Our AI agents will research your market and competition</li>
-                <li>• They'll create compelling copy and creative direction</li>
+                <li>• Our AI agents will understand your request and create a plan</li>
+                <li>• They'll gather relevant information based on that plan</li>
+                <li>• Produce initial drafts and evaluate their quality</li>
+                <li>• Perform final polishing and formatting of your brief</li>
                 <li>• You'll see the workflow progress in real-time</li>
                 <li>• Receive a complete marketing brief when finished</li>
               </ul>

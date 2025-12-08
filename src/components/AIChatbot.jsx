@@ -45,7 +45,7 @@ const AIChatbot = () => {
     }
 
     if (lowercaseInput.includes('workflow') || lowercaseInput.includes('process')) {
-      return "Our workflow has 4 specialized AI agents:\n1. Research Agent - Analyzes market trends\n2. Copywriter Agent - Creates compelling copy\n3. Art Director Agent - Provides creative direction\n4. Manager Agent - Compiles everything into a final brief\n\nClick 'Start AI Workflow' on the workflow page to begin!"
+      return "Our workflow has 5 specialized AI agents:\n1. Planner Agent - Understands user requests and creates execution plans\n2. Researcher Agent - Gathers relevant information based on the plan\n3. Writer Agent - Produces initial drafts using collected information\n4. Critic Agent - Evaluates draft quality, scores it, and triggers rewrite cycles if needed\n5. Assembler Agent - Performs final polishing, formatting, and output assembly\n\nClick 'Start AI Workflow' on the workflow page to begin!"
     }
 
     if (lowercaseInput.includes('price') || lowercaseInput.includes('cost') || lowercaseInput.includes('pricing')) {
@@ -57,7 +57,7 @@ const AIChatbot = () => {
     }
 
     if (lowercaseInput.includes('agent')) {
-      return "Our AI agents are specialized for different tasks:\n• Research Agent: Market analysis & competitor research\n• Copywriter Agent: Ad copy & messaging\n• Art Director Agent: Visual concepts & creative direction\n• Manager Agent: Final brief compilation\n\nThey work together to create comprehensive marketing materials!"
+      return "Our AI agents are specialized for different tasks:\n• Planner Agent: Understands user requests and creates execution plans\n• Researcher Agent: Gathers relevant information based on the plan\n• Writer Agent: Produces initial drafts using collected information\n• Critic Agent: Evaluates draft quality, scores it, and triggers rewrite cycles if needed\n• Assembler Agent: Performs final polishing, formatting, and output assembly\n\nThey work together to create comprehensive marketing materials!"
     }
 
     return "I understand you're asking about: " + input + "\n\nFor specific assistance, try asking about:\n• Creating campaigns\n• Workflow process\n• Pricing information\n• Feature details\n\nOr contact our support team for personalized help!"

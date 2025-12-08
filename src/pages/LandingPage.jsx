@@ -8,28 +8,33 @@ const LandingPage = () => {
   const features = [
     {
       icon: Brain,
-      title: "AI-Powered Research",
-      description: "Our research agent analyzes market trends, competitors, and opportunities in seconds."
+      title: "AI-Powered Planning",
+      description: "Our planner agent understands your requests and creates execution plans."
     },
     {
       icon: Sparkles,
-      title: "Creative Copywriting",
-      description: "Generate compelling ad copy and messaging that resonates with your audience."
+      title: "Intelligent Research",
+      description: "Gathers relevant information based on the plan from multiple sources."
     },
     {
       icon: Target,
-      title: "Smart Art Direction",
-      description: "Get creative prompts and visual direction from our AI art director."
+      title: "Creative Writing",
+      description: "Produces initial drafts using collected information and brand guidelines."
     },
     {
       icon: Workflow,
-      title: "Automated Workflows",
-      description: "Multi-agent collaboration delivers complete marketing briefs automatically."
+      title: "Quality Review",
+      description: "Evaluates draft quality, scores it, and triggers rewrite cycles if needed."
+    },
+    {
+      icon: Zap,
+      title: "Final Assembly",
+      description: "Performs final polishing, formatting, and output assembly."
     }
   ]
 
   return (
-    <div className="relative overflow-hidden">
+    <div id="landing-page" className="relative overflow-hidden w-full min-h-screen">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-neon-blue/20 rounded-full blur-3xl animate-pulse-slow" />
@@ -37,7 +42,7 @@ const LandingPage = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-20 pb-32">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 sm:pt-20 sm:pb-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,13 +59,13 @@ const LandingPage = () => {
             <span className="text-sm font-medium text-gray-300">Next-Gen AI Workflow Automation</span>
           </motion.div>
 
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
             <span className="text-white">Automate Your</span>
             <br />
             <span className="text-gradient glow-text">Marketing Workflow</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto">
             Transform product ideas into complete marketing briefs with our intelligent multi-agent AI system. 
             <span className="text-neon-blue font-semibold"> No manual work required.</span>
           </p>
@@ -90,7 +95,7 @@ const LandingPage = () => {
         >
           {[
             { value: "10min", label: "From Idea to Brief" },
-            { value: "4 AI", label: "Specialized Agents" },
+            { value: "5 AI", label: "Specialized Agents" },
             { value: "100%", label: "Automated Process" }
           ].map((stat, i) => (
             <Card key={i} variant="glass" className="text-center">
@@ -118,7 +123,7 @@ const LandingPage = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {features.map((feature, i) => (
             <motion.div
               key={i}
@@ -162,7 +167,7 @@ const LandingPage = () => {
             {
               step: "02",
               title: "AI Agents Collaborate",
-              description: "Watch our specialized agents research, write, and design in real-time"
+              description: "Watch our 5 specialized agents plan, research, write, critique, and assemble in real-time"
             },
             {
               step: "03",

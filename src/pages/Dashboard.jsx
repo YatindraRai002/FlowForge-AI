@@ -14,7 +14,7 @@ const Dashboard = () => {
       title: "AI SaaS Platform Launch",
       status: "Completed",
       date: "2025-12-01",
-      agents: 4,
+      agents: 5,
       channels: ["Email", "Social Media"]
     },
     {
@@ -22,16 +22,16 @@ const Dashboard = () => {
       title: "E-commerce Holiday Campaign",
       status: "In Progress",
       date: "2025-12-05",
-      agents: 3,
+      agents: 5,
       channels: ["Google Ads", "Facebook"]
     },
     {
       id: 3,
       title: "Mobile App Onboarding",
-      status: "Pending",
-      date: "2025-12-10",
-      agents: 0,
-      channels: ["Push Notifications", "SMS"]
+      status: "Draft",
+      date: "2025-12-03",
+      agents: 5,
+      channels: ["Instagram", "YouTube"]
     }
   ]
 
@@ -45,7 +45,7 @@ const Dashboard = () => {
     },
     { 
       label: "Active Agents", 
-      value: "4", 
+      value: "5", 
       change: "Stable",
       description: "Currently processing campaigns"
     },

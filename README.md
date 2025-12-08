@@ -4,7 +4,7 @@ A modern web app that uses AI agents to generate complete marketing briefs autom
 
 ## What This Does
 
-Instead of manually researching markets, writing copy, and planning campaigns - this app does it all for you using 4 specialized AI agents working together.
+Instead of manually researching markets, writing copy, and planning campaigns - this app does it all for you using 5 specialized AI agents working together.
 
 ## Quick Start
 
@@ -57,10 +57,11 @@ src/
 
 1. You enter product details
 2. AI agents run in sequence:
-   - Research Agent → analyzes market
-   - Copywriter Agent → writes ad copy
-   - Art Director → creates visual direction
-   - Manager Agent → compiles everything
+   - Planner Agent → Understands user requests and creates execution plans
+   - Researcher Agent → Gathers relevant information based on the plan
+   - Writer Agent → Produces initial drafts using collected information
+   - Critic Agent → Evaluates draft quality, scores it, and triggers rewrite cycles if needed
+   - Assembler Agent → Performs final polishing, formatting, and output assembly
 3. You get a complete marketing brief
 
 ## Commands

@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion'
-import { Search, PenTool, Palette, Briefcase, CheckCircle, Loader as LoaderIcon, Clock } from 'lucide-react'
+import { Search, PenTool, Palette, Briefcase, CheckCircle, Loader as LoaderIcon, Clock, RotateCcw } from 'lucide-react'
 import Loader from './Loader'
 
 const iconMap = {
   Search: Search,
   PenTool: PenTool,
   Palette: Palette,
-  Briefcase: Briefcase
+  Briefcase: Briefcase,
+  RotateCcw: RotateCcw
 }
 
 const AgentStatus = ({ agent, expanded = false, onToggle }) => {

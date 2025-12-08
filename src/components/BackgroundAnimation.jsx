@@ -18,7 +18,7 @@ const BackgroundAnimation = () => {
   }, [])
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
       {/* Animated gradient orbs */}
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full opacity-20 blur-3xl"

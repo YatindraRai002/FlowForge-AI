@@ -175,7 +175,7 @@ const Analytics = () => {
           <div className="space-y-4">
             {[
               { action: 'Campaign completed', detail: 'AI SaaS Platform Launch', time: '2 hours ago', status: 'success' },
-              { action: 'Agent started', detail: 'Research Agent processing', time: '4 hours ago', status: 'info' },
+              { action: 'Agent started', detail: 'Planner Agent processing', time: '4 hours ago', status: 'info' },
               { action: 'Campaign created', detail: 'E-commerce Holiday Campaign', time: '1 day ago', status: 'neutral' },
               { action: 'Performance report', detail: 'Monthly analytics generated', time: '2 days ago', status: 'info' },
               { action: 'System update', detail: 'Agents updated to v2.1', time: '3 days ago', status: 'neutral' },

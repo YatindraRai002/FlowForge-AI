@@ -67,13 +67,16 @@ const Docs = () => (
   <APIDocumentation />
 )
 
+import LandingPage from './pages/LandingPage'
+
 function App() {
   return (
     <ThemeProvider>
       <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<Welcome />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/welcome" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
