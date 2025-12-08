@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 Multi-Agent Workflow Automator
 
 A modern web app that uses AI agents to generate complete marketing briefs automatically.
@@ -102,3 +103,6 @@ Check `QUICKSTART.md` for detailed step-by-step guide.
 ---
 
 Built with React + TailwindCSS + Framer Motion 🎨
+=======
+# FlowForge-AI
+>>>>>>> origin/main
