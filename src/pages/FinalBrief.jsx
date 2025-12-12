@@ -1,51 +1,122 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Download, Copy, CheckCircle, FileText, Target, Users, Palette, Calendar, TrendingUp } from 'lucide-react'
+import { Download, Copy, CheckCircle, FileText, ArrowLeft, Sparkles } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import Card from '../components/Card'
-import { finalBriefData } from '../data/dummyData'
+import ReactMarkdown from 'react-markdown'
 
 const FinalBrief = () => {
+  const navigate = useNavigate()
   const [copied, setCopied] = useState(false)
+  const [briefData, setBriefData] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Load the brief from localStorage
+    const savedResult = localStorage.getItem('lastWorkflowResult')
+    if (savedResult) {
+      try {
+        const result = JSON.parse(savedResult)
+        
+        // Handle different data formats
+        if (typeof result === 'string') {
+          // Plain string format - parse into structured format
+          const lines = result.split('\n')
+          let title = 'Marketing Brief'
+          let summary = ''
+          let body = result
+          
+          // Extract title from first # heading
+          for (let i = 0; i < lines.length; i++) {
+            if (lines[i].startsWith('# ')) {
+              title = lines[i].replace('# ', '').trim()
+              body = lines.slice(i + 1).join('\n').trim()
+              break
+            }
+          }
+          
+          // Extract summary from Executive Summary section
+          const lowerResult = result.toLowerCase()
+          if (lowerResult.includes('executive summary')) {
+            const summaryMatch = result.match(/executive summary[:\s]+(.*?)(?=\n#|\n\n#|$)/is)
+            if (summaryMatch) {
+              summary = summaryMatch[1].trim().substring(0, 300)
+            }
+          }
+          
+          setBriefData({ title, summary, body, raw: result })
+        } else {
+          // Already structured format
+          setBriefData(result)
+        }
+      } catch (err) {
+        console.error('Error parsing saved result:', err)
+      }
+    }
+    setLoading(false)
+  }, [])
 
   const handleCopy = () => {
-    const briefText = JSON.stringify(finalBriefData, null, 2)
+    if (!briefData) return
+    // Handle both old format (raw string) and new format (structured object)
+    const briefText = briefData.raw || briefData.body || JSON.stringify(briefData, null, 2)
     navigator.clipboard.writeText(briefText)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
   const handleDownload = () => {
-    const briefText = JSON.stringify(finalBriefData, null, 2)
-    const blob = new Blob([briefText], { type: 'application/json' })
+    if (!briefData) return
+    // Handle both formats
+    let briefText
+    if (briefData.title && briefData.body) {
+      // New structured format
+      const summarySection = briefData.summary ? `\n\n**Executive Summary:** ${briefData.summary}\n\n` : '\n\n'
+      briefText = `# ${briefData.title}${summarySection}${briefData.body}`
+    } else {
+      // Old format or raw text
+      briefText = briefData.raw || briefData.body || JSON.stringify(briefData, null, 2)
+    }
+    
+    const blob = new Blob([briefText], { type: 'text/markdown' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'marketing-brief.json'
+    a.download = 'marketing-brief.md'
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
   }
 
-  const Section = ({ icon: Icon, title, children }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="mb-8"
-    >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="bg-gradient-to-r from-neon-blue to-neon-purple p-2 rounded-lg">
-          <Icon className="w-5 h-5 text-white" />
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Sparkles className="w-12 h-12 text-neon-blue mx-auto mb-4 animate-pulse" />
+          <p className="text-gray-400">Loading your brief...</p>
         </div>
-        <h2 className="text-2xl font-bold text-white">{title}</h2>
       </div>
-      <div className="ml-11">
-        {children}
+    )
+  }
+
+  if (!briefData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <Card className="text-center max-w-md">
+          <FileText className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-white mb-2">No Brief Found</h2>
+          <p className="text-gray-400 mb-6">
+            Please create a campaign first to generate a marketing brief.
+          </p>
+          <Button onClick={() => navigate('/create')}>
+            Create Campaign
+          </Button>
+        </Card>
       </div>
-    </motion.div>
-  )
+    )
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -81,6 +152,10 @@ const FinalBrief = () => {
           transition={{ delay: 0.2 }}
           className="flex flex-wrap items-center justify-center gap-4 mb-12"
         >
+          <Button variant="secondary" onClick={() => navigate('/create')}>
+            <ArrowLeft className="w-5 h-5" />
+            Create New Campaign
+          </Button>
           <Button size="lg" onClick={handleDownload}>
             <Download className="w-5 h-5" />
             Download Brief
@@ -101,205 +176,53 @@ const FinalBrief = () => {
         </motion.div>
 
         {/* Brief Content */}
-        <Card variant="glass" className="border-2 border-neon-blue/30 shadow-glow">
-          <div className="space-y-8">
-            {/* Title & Date */}
-            <div className="border-b border-white/10 pb-6">
-              <h1 className="text-3xl font-bold text-white mb-2">
-                {finalBriefData.projectTitle}
+        <Card variant="glass" className="max-w-4xl mx-auto">
+          <div className="prose prose-invert prose-lg max-w-none">
+            <div className="mb-8 pb-8 border-b border-white/10">
+              <h1 className="text-4xl font-bold text-white mb-4">
+                {briefData.title || 'Marketing Brief'}
               </h1>
-              <p className="text-gray-400">Generated on {finalBriefData.generatedDate}</p>
+              {briefData.summary && (
+                <div className="bg-neon-blue/10 border border-neon-blue/30 rounded-xl p-4">
+                  <p className="text-lg text-gray-300 mb-0">
+                    <strong className="text-neon-blue">Executive Summary:</strong> {briefData.summary}
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="markdown-content text-gray-300">
+              <ReactMarkdown
+                components={{
+                  h1: ({node, ...props}) => <h1 className="text-4xl font-bold text-white mt-8 mb-6" {...props} />,
+                  h2: ({node, ...props}) => <h2 className="text-3xl font-bold text-white mt-8 mb-4" {...props} />,
+                  h3: ({node, ...props}) => <h3 className="text-2xl font-bold text-white mt-6 mb-3" {...props} />,
+                  p: ({node, ...props}) => <p className="text-gray-300 mb-4 leading-relaxed" {...props} />,
+                  ul: ({node, ...props}) => <ul className="list-disc list-inside mb-4 space-y-2" {...props} />,
+                  ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-4 space-y-2" {...props} />,
+                  li: ({node, ...props}) => <li className="text-gray-300" {...props} />,
+                  strong: ({node, ...props}) => <strong className="text-neon-blue font-semibold" {...props} />,
+                  blockquote: ({node, ...props}) => (
+                    <blockquote className="border-l-4 border-neon-purple pl-4 italic my-4 text-gray-400" {...props} />
+                  ),
+                }}
+              >
+                {briefData.body || briefData.raw || 'No content available'}
+              </ReactMarkdown>
             </div>
 
-            {/* Overview */}
-            <Section icon={FileText} title="Overview">
-              <p className="text-gray-300 leading-relaxed">
-                {finalBriefData.overview}
-              </p>
-            </Section>
-
-            {/* Objectives */}
-            <Section icon={Target} title="Campaign Objectives">
-              <ul className="space-y-2">
-                {finalBriefData.objectives.map((obj, i) => (
-                  <li key={i} className="flex items-start gap-3 text-gray-300">
-                    <div className="w-1.5 h-1.5 bg-neon-blue rounded-full mt-2 flex-shrink-0" />
-                    {obj}
-                  </li>
-                ))}
-              </ul>
-            </Section>
-
-            {/* Target Audience */}
-            <Section icon={Users} title="Target Audience">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Primary</h3>
-                  <p className="text-gray-300">{finalBriefData.targetAudience.primary}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Secondary</h3>
-                  <p className="text-gray-300">{finalBriefData.targetAudience.secondary}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Demographics</h3>
-                  <p className="text-gray-300">{finalBriefData.targetAudience.demographics}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Pain Points</h3>
-                  <ul className="space-y-2">
-                    {finalBriefData.targetAudience.painPoints.map((pain, i) => (
-                      <li key={i} className="flex items-start gap-3 text-gray-300">
-                        <div className="w-1.5 h-1.5 bg-neon-purple rounded-full mt-2 flex-shrink-0" />
-                        {pain}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            {briefData.table_of_contents && briefData.table_of_contents.length > 0 && (
+              <div className="mt-8 pt-8 border-t border-white/10">
+                <h3 className="text-xl font-bold text-white mb-4">Table of Contents</h3>
+                <ul className="space-y-2">
+                  {briefData.table_of_contents.map((item, index) => (
+                    <li key={index} className="text-neon-blue">• {item}</li>
+                  ))}
+                </ul>
               </div>
-            </Section>
-
-            {/* Key Messages */}
-            <Section icon={Target} title="Key Messages">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {finalBriefData.keyMessages.map((msg, i) => (
-                  <Card key={i} variant="glassDark" className="text-center">
-                    <p className="text-sm text-gray-300">{msg}</p>
-                  </Card>
-                ))}
-              </div>
-            </Section>
-
-            {/* Ad Copy */}
-            <Section icon={FileText} title="Ad Copy">
-              <div className="space-y-4">
-                <div className="glass-dark rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-neon-purple mb-2">Headline</h3>
-                  <p className="text-2xl font-bold text-white">{finalBriefData.adCopy.headline}</p>
-                </div>
-                <div className="glass-dark rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-neon-purple mb-2">Subheadline</h3>
-                  <p className="text-lg text-gray-300">{finalBriefData.adCopy.subheadline}</p>
-                </div>
-                <div className="glass-dark rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-neon-purple mb-2">Body Copy</h3>
-                  <p className="text-gray-300">{finalBriefData.adCopy.bodyPrimary}</p>
-                </div>
-                <div className="glass-dark rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-neon-purple mb-2">Social Copy</h3>
-                  <p className="text-gray-300">{finalBriefData.adCopy.bodySocial}</p>
-                </div>
-                <div className="glass-dark rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-neon-purple mb-2">Call to Action</h3>
-                  <p className="text-lg font-semibold text-neon-blue">{finalBriefData.adCopy.cta}</p>
-                </div>
-              </div>
-            </Section>
-
-            {/* Creative Direction */}
-            <Section icon={Palette} title="Creative Direction">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Visual Theme</h3>
-                  <p className="text-gray-300">{finalBriefData.creativeDirection.visualTheme}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-3">Color Palette</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {Object.entries(finalBriefData.creativeDirection.colorPalette).map(([name, color]) => (
-                      <div key={name} className="glass-dark rounded-lg p-3">
-                        <div 
-                          className="w-full h-12 rounded mb-2"
-                          style={{ backgroundColor: color.split(' ')[0] }}
-                        />
-                        <p className="text-xs text-gray-400 capitalize">{name}</p>
-                        <p className="text-xs text-gray-500">{color}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Imagery Guidelines</h3>
-                  <ul className="space-y-2">
-                    {finalBriefData.creativeDirection.imagery.map((img, i) => (
-                      <li key={i} className="flex items-start gap-3 text-gray-300">
-                        <div className="w-1.5 h-1.5 bg-neon-pink rounded-full mt-2 flex-shrink-0" />
-                        {img}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-neon-blue mb-2">Design Style</h3>
-                  <p className="text-gray-300">{finalBriefData.creativeDirection.designStyle}</p>
-                </div>
-              </div>
-            </Section>
-
-            {/* Channels */}
-            <Section icon={TrendingUp} title="Marketing Channels">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {finalBriefData.channels.map((channel, i) => (
-                  <Card key={i} variant="glassDark">
-                    <h3 className="text-lg font-bold text-white mb-2">{channel.name}</h3>
-                    <div className="space-y-2 text-sm">
-                      <p className="text-gray-400">
-                        <span className="text-neon-blue font-semibold">Budget:</span> {channel.budget}
-                      </p>
-                      <p className="text-gray-400">
-                        <span className="text-neon-blue font-semibold">Goal:</span> {channel.goal}
-                      </p>
-                      <p className="text-gray-400">
-                        <span className="text-neon-blue font-semibold">Creative:</span> {channel.creative}
-                      </p>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </Section>
-
-            {/* Posting Plan */}
-            <Section icon={Calendar} title="4-Week Posting Plan">
-              <div className="space-y-3">
-                {Object.entries(finalBriefData.postingPlan).map(([week, plan]) => (
-                  <div key={week} className="glass-dark rounded-lg p-4">
-                    <h3 className="text-sm font-semibold text-neon-purple mb-1 capitalize">
-                      {week.replace('week', 'Week ')}
-                    </h3>
-                    <p className="text-gray-300">{plan}</p>
-                  </div>
-                ))}
-              </div>
-            </Section>
-
-            {/* Success Metrics */}
-            <Section icon={Target} title="Success Metrics">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(finalBriefData.metrics).map(([metric, value]) => (
-                  <Card key={metric} variant="glassDark" className="text-center">
-                    <div className="text-2xl font-bold text-gradient mb-1">{value}</div>
-                    <div className="text-xs text-gray-400 capitalize">{metric}</div>
-                  </Card>
-                ))}
-              </div>
-            </Section>
+            )}
           </div>
         </Card>
-
-        {/* Bottom Actions */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-8 text-center"
-        >
-          <p className="text-gray-400 mb-4">
-            Need to make changes? Create a new campaign or modify your inputs.
-          </p>
-          <Button variant="secondary" onClick={() => window.location.href = '/#/create'}>
-            Create New Campaign
-          </Button>
-        </motion.div>
       </div>
     </div>
   )

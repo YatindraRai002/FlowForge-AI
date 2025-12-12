@@ -69,6 +69,8 @@ const Docs = () => (
 )
 
 function App() {
+  console.log('App component rendering...')
+  
   return (
     <ThemeProvider>
       <Router>

@@ -1,0 +1,16 @@
+[2025-12-09 17:05:48,776] metagpt - ERROR - main_flowforge.py:214 - Workflow 5491adeb-9254-4940-ae48-1611cb26bd9f failed: PlanAction.run() missing 1 required positional argument: 'format_type'
+[2025-12-09 19:01:36,655] metagpt - ERROR - main_flowforge.py:243 - Workflow 8ce8e028-6f62-4908-8205-bd2b753e702f failed: 'str' object has no attribute 'get'
+[2025-12-09 19:14:35,085] metagpt - ERROR - main_flowforge.py:243 - Workflow 2e252c85-6ac5-4b14-ab88-0f74c94af35f failed: Ollama request timed out after 120s.
+The model may be too slow or not responding.
+Try: ollama run mistral
+[2025-12-09 22:22:02,724] metagpt - ERROR - main_flowforge.py:243 - Workflow 8272ace4-7f39-4e9b-9f2b-4921d3b51c82 failed: 'str' object has no attribute 'get'
+[2025-12-10 20:03:04,640] metagpt - ERROR - main_flowforge.py:243 - Workflow 0d4f268d-9f3c-4a05-a8ba-eef9bfc0e18f failed: 'str' object has no attribute 'get'
+[2025-12-10 20:36:39,110] metagpt - ERROR - main_flowforge.py:243 - Workflow 22fcfdf5-b891-4df3-becd-03c16e95a1ee failed: 'str' object has no attribute 'get'
+[2025-12-10 20:40:01,065] metagpt - ERROR - main_flowforge.py:243 - Workflow ac76b5b8-ccda-4f57-8d2d-a3e5613743df failed: 'str' object has no attribute 'get'
+[2025-12-10 20:46:35,059] metagpt - ERROR - main_flowforge.py:243 - Workflow 14f2ad4b-3139-4172-8b96-a305fe67a396 failed: 'str' object has no attribute 'get'
+[2025-12-10 21:10:06,690] metagpt - INFO - main_flowforge.py:304 - Workflow f354c92c-0b88-4b3c-b17b-076d1c1ce6fa completed and cached
+[2025-12-10 21:10:59,651] metagpt - INFO - main_flowforge.py:304 - Workflow 5d9a05ec-e138-4877-b790-b992e1996f0e completed and cached
+[2025-12-10 21:18:02,906] metagpt - INFO - main_flowforge.py:216 - Cache hit for request: Create a comprehensive marketing brief for tutoria...
+[2025-12-10 21:30:11,335] metagpt - INFO - main_flowforge.py:304 - Workflow de91a48b-1d0e-4177-bcfc-ba258cbfeb57 completed and cached
+[2025-12-10 21:43:39,476] metagpt - INFO - main_flowforge.py:216 - Cache hit for request: Create a comprehensive marketing brief for Sample ...
+[2025-12-10 21:46:54,982] metagpt - INFO - main_flowforge.py:304 - Workflow 82895cb5-8fdc-48ec-974d-8ab00c39a081 completed and cached

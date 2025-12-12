@@ -52,13 +52,18 @@ const AgentStatus = ({ agent, expanded = false, onToggle }) => {
             <Icon className={`w-6 h-6 ${config.color}`} />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white">{agent.title}</h3>
+            <h3 className="text-xl font-bold text-white">{agent.name || agent.title}</h3>
             <div className="flex items-center gap-2 mt-1">
               <StatusIcon className={`w-4 h-4 ${config.color}`} />
               <span className={`text-sm font-medium ${config.color} capitalize`}>
                 {agent.status}
               </span>
             </div>
+            {agent.currentTask && agent.status === 'running' && (
+              <p className="text-sm text-gray-400 mt-2 italic">
+                {agent.currentTask}
+              </p>
+            )}
           </div>
         </div>
         

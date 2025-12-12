@@ -4,26 +4,75 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { ArrowRight, CheckCircle, Play, Sparkles, Search, PenTool, Palette, Briefcase, RotateCcw } from 'lucide-react'
 import Button from '../components/Button'
 import AgentStatus from '../components/AgentStatus'
-import { agentWorkflowData } from '../data/dummyData'
+import { workflowAPI } from '../services/api'
 
 const WorkflowProgress = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  
+  // Agent data defined inline - no dummy data needed
+  const agentDefinitions = {
+    planner: {
+      name: "Planner Agent",
+      description: "Strategic planning using proven marketing frameworks",
+      icon: Search,
+      color: "neon-blue",
+      tasks: ["Analyzing request", "Defining target audience", "Creating document structure", "Setting quality constraints"]
+    },
+    researcher: {
+      name: "Researcher Agent",
+      description: "Real-time market analysis and insights",
+      icon: Search,
+      color: "neon-purple",
+      tasks: ["Analyzing market trends", "Gathering audience insights", "Researching competitors", "Collecting industry data"]
+    },
+    writer: {
+      name: "Writer Agent",
+      description: "Crafting compelling, data-driven content",
+      icon: PenTool,
+      color: "neon-pink",
+      tasks: ["Writing engaging copy", "Incorporating research data", "Creating persuasive narratives", "Structuring content"]
+    },
+    critic: {
+      name: "Critic Agent",
+      description: "Quality review and strategic improvements",
+      icon: RotateCcw,
+      color: "neon-green",
+      tasks: ["Evaluating accuracy", "Assessing impact", "Improving clarity", "Enhancing effectiveness"]
+    },
+    assembler: {
+      name: "Assembler Agent",
+      description: "Final polishing and executive formatting",
+      icon: Briefcase,
+      color: "blue-400",
+      tasks: ["Polishing content", "Formatting document", "Adding executive summary", "Final quality check"]
+    }
+  }
+  
   const [agents, setAgents] = useState({
-    planner: { ...agentWorkflowData.planner, status: 'pending' },
-    researcher: { ...agentWorkflowData.researcher, status: 'pending' },
-    writer: { ...agentWorkflowData.writer, status: 'pending' },
-    critic: { ...agentWorkflowData.critic, status: 'pending' },
-    assembler: { ...agentWorkflowData.assembler, status: 'pending' }
+    planner: { ...agentDefinitions.planner, status: 'pending', progress: 0 },
+    researcher: { ...agentDefinitions.researcher, status: 'pending', progress: 0 },
+    writer: { ...agentDefinitions.writer, status: 'pending', progress: 0 },
+    critic: { ...agentDefinitions.critic, status: 'pending', progress: 0 },
+    assembler: { ...agentDefinitions.assembler, status: 'pending', progress: 0 }
   })
   const [expandedAgent, setExpandedAgent] = useState(null)
   const [allComplete, setAllComplete] = useState(false)
   const [workflowStarted, setWorkflowStarted] = useState(false)
+  const [workflowId, setWorkflowId] = useState(null)
+  const [error, setError] = useState(null)
+  const [finalResult, setFinalResult] = useState(null)
   const [campaignData, setCampaignData] = useState({
     product: "Sample Product",
     audience: "General Audience",
     channels: ["Email", "Social Media"]
   })
+
+  // Clear stale workflow data on mount
+  useEffect(() => {
+    // Don't auto-load old workflows, always start fresh
+    localStorage.removeItem('lastWorkflowId');
+  }, []);
 
   // Get campaign data from navigation state
   useEffect(() => {
@@ -44,35 +93,175 @@ const WorkflowProgress = () => {
     }
   }, [campaignData]);
 
-  const startWorkflow = () => {
-    setWorkflowStarted(true)
-    
-    // Simulate workflow progression
-    const timeline = [
-      { delay: 1000, agent: 'planner', status: 'running' },
-      { delay: 3000, agent: 'planner', status: 'done' },
-      { delay: 3500, agent: 'researcher', status: 'running' },
-      { delay: 6000, agent: 'researcher', status: 'done' },
-      { delay: 6500, agent: 'writer', status: 'running' },
-      { delay: 9000, agent: 'writer', status: 'done' },
-      { delay: 9500, agent: 'critic', status: 'running' },
-      { delay: 12000, agent: 'critic', status: 'done' },
-      { delay: 12500, agent: 'assembler', status: 'running' },
-      { delay: 15000, agent: 'assembler', status: 'done' }
-    ]
+  // Use SSE for real-time workflow status updates
+  useEffect(() => {
+    if (!workflowId) return;
 
-    timeline.forEach(({ delay, agent, status }) => {
-      setTimeout(() => {
-        setAgents(prev => ({
-          ...prev,
-          [agent]: { ...prev[agent], status }
-        }))
-        
-        if (agent === 'assembler' && status === 'done') {
-          setAllComplete(true)
+    let eventSource = null;
+    let fallbackInterval = null;
+    let errorCount = 0;
+    const maxErrors = 3;
+
+    // Try SSE first for real-time updates
+    try {
+      eventSource = new EventSource(`http://localhost:8000/api/workflow/stream/${workflowId}`);
+      
+      eventSource.onmessage = (event) => {
+        try {
+          const status = JSON.parse(event.data);
+          errorCount = 0; // Reset on successful message
+          
+          updateAgentsFromStatus(status.current_stage, status.progress);
+          
+          if (status.current_stage === 'completed') {
+            eventSource.close();
+            setAllComplete(true);
+            // Fetch the final result
+            workflowAPI.getWorkflowResult(workflowId)
+              .then(result => {
+                setFinalResult(result.result);
+                localStorage.setItem('lastWorkflowResult', JSON.stringify(result.result));
+                localStorage.setItem('lastWorkflowId', workflowId);
+              })
+              .catch(err => console.error('Error fetching result:', err));
+          }
+          
+          if (status.error) {
+            setError(status.error);
+            eventSource.close();
+          }
+        } catch (err) {
+          console.error('Error parsing SSE data:', err);
         }
-      }, delay)
-    })
+      };
+
+      eventSource.onerror = (err) => {
+        console.error('SSE connection error:', err);
+        errorCount++;
+        
+        if (errorCount >= maxErrors) {
+          eventSource.close();
+          setError('Connection lost. Please refresh the page.');
+        }
+      };
+
+    } catch (err) {
+      console.error('SSE not supported, falling back to polling:', err);
+      
+      // Fallback to polling if SSE fails
+      fallbackInterval = setInterval(async () => {
+        try {
+          const status = await workflowAPI.getWorkflowStatus(workflowId);
+          errorCount = 0;
+          
+          updateAgentsFromStatus(status.current_stage, status.progress);
+          
+          if (status.current_stage === 'completed') {
+            clearInterval(fallbackInterval);
+            setAllComplete(true);
+            const result = await workflowAPI.getWorkflowResult(workflowId);
+            setFinalResult(result.result);
+            localStorage.setItem('lastWorkflowResult', JSON.stringify(result.result));
+            localStorage.setItem('lastWorkflowId', workflowId);
+          }
+        } catch (err) {
+          errorCount++;
+          if (errorCount >= maxErrors) {
+            clearInterval(fallbackInterval);
+            setError('Workflow not found. Please start a new campaign.');
+            setWorkflowStarted(false);
+            setWorkflowId(null);
+          }
+        }
+      }, 2000);
+    }
+
+    return () => {
+      if (eventSource) eventSource.close();
+      if (fallbackInterval) clearInterval(fallbackInterval);
+    };
+  }, [workflowId]);
+
+  const updateAgentsFromActivities = (activities) => {
+    const agentMap = {
+      'Planner Agent': 'planner',
+      'Researcher Agent': 'researcher',
+      'Writer Agent': 'writer',
+      'Critic Agent': 'critic',
+      'Assembler Agent': 'assembler'
+    };
+
+    setAgents(prev => {
+      const newState = { ...prev };
+      
+      activities.forEach(activity => {
+        const agentKey = agentMap[activity.agent_name];
+        if (agentKey) {
+          newState[agentKey] = {
+            ...prev[agentKey],
+            status: activity.status === 'completed' ? 'done' : activity.status,
+            currentTask: activity.current_task
+          };
+        }
+      });
+      
+      return newState;
+    });
+  };
+
+  const updateAgentsFromStatus = (stage, progress) => {
+    const stageMap = {
+      'planning': ['planner', 'running'],
+      'researching': ['researcher', 'running'],
+      'writing': ['writer', 'running'],
+      'reviewing': ['critic', 'running'],
+      'assembling': ['assembler', 'running'],
+      'completed': ['assembler', 'done']
+    };
+
+    if (stage in stageMap) {
+      const [currentAgent, status] = stageMap[stage];
+      
+      // Mark previous agents as done
+      const agentOrder = ['planner', 'researcher', 'writer', 'critic', 'assembler'];
+      const currentIndex = agentOrder.indexOf(currentAgent);
+      
+      setAgents(prev => {
+        const newState = { ...prev };
+        agentOrder.forEach((agent, idx) => {
+          if (idx < currentIndex) {
+            newState[agent] = { ...prev[agent], status: 'done' };
+          } else if (agent === currentAgent) {
+            newState[agent] = { ...prev[agent], status, currentTask: agentDefinitions[agent]?.name || agent };
+          }
+        });
+        return newState;
+      });
+    }
+  };
+
+  const startWorkflow = async () => {
+    setWorkflowStarted(true);
+    setError(null);
+    
+    try {
+      // Build the request text
+      const requestText = `Create a comprehensive marketing brief for ${campaignData.product}. Target audience: ${campaignData.audience}. Marketing channels: ${campaignData.channels?.join(', ') || 'various channels'}.`;
+      
+      // Start the workflow
+      const response = await workflowAPI.startWorkflow(
+        requestText,
+        'professional',
+        'medium',
+        'marketing brief'
+      );
+      
+      setWorkflowId(response.workflow_id);
+    } catch (err) {
+      console.error('Error starting workflow:', err);
+      setError('Failed to start workflow. Please ensure the backend is running.');
+      setWorkflowStarted(false);
+    }
   }
 
   const agentKeys = ['planner', 'researcher', 'writer', 'critic', 'assembler']
@@ -294,9 +483,9 @@ const WorkflowProgress = () => {
               {agentKeys.map((key) => {
                 const agent = agents[key]
                 const messages = {
-                  pending: `${agent.title} waiting in queue...`,
-                  running: `${agent.title} is analyzing and generating content...`,
-                  done: `${agent.title} completed successfully ✓`
+                  pending: `${agent.name || agent.title} waiting in queue...`,
+                  running: agent.currentTask || `${agent.name || agent.title} is analyzing and generating content...`,
+                  done: `${agent.name || agent.title} completed successfully ✓`
                 }
                 
                 return (
@@ -306,14 +495,14 @@ const WorkflowProgress = () => {
                     animate={{ opacity: 1, x: 0 }}
                     className="flex items-start gap-3 text-sm"
                   >
-                    <div className={`w-2 h-2 rounded-full mt-1 ${
+                    <div className={`w-2 h-2 rounded-full mt-1 flex-shrink-0 ${
                       agent.status === 'done' ? 'bg-neon-green' :
                       agent.status === 'running' ? 'bg-neon-blue animate-pulse' :
                       'bg-gray-600'
                     }`} />
                     <span className={`${
                       agent.status === 'done' ? 'text-gray-400' :
-                      agent.status === 'running' ? 'text-white' :
+                      agent.status === 'running' ? 'text-white font-medium' :
                       'text-gray-600'
                     }`}>
                       {messages[agent.status]}
