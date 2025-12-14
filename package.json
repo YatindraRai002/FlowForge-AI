@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npx vite build",
+    "build": "node node_modules/vite/bin/vite.js build",
     "preview": "vite preview"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "react-dom": "^19.2.1",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.10.1",
+    "serve": "^14.2.1",
     "vite": "^7.2.6"
   },
   "devDependencies": {
