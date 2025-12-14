@@ -263,35 +263,60 @@ async def execute_workflow(workflow_id: str, request: WorkflowRequest):
         assemble_action = AssembleAction(llm=llm_assembler)
         
         # Execute Plan (business-analyst model)
+        logger.info(f"[{workflow_id}] Starting planning stage...")
         workflows[workflow_id]["current_stage"] = "planning"
         workflows[workflow_id]["progress"] = 20
-        plan_result = await plan_action.run(request.request, request.content_type, request.tone)
+        plan_result = await asyncio.wait_for(
+            plan_action.run(request.request, request.content_type, request.tone),
+            timeout=180
+        )
+        logger.info(f"[{workflow_id}] Planning completed")
         
         # Execute Research (research-assistant model)
+        logger.info(f"[{workflow_id}] Starting research stage...")
         workflows[workflow_id]["current_stage"] = "researching"
         workflows[workflow_id]["progress"] = 40
-        research_result = await research_action.run(request.request, plan_result.content)
+        research_result = await asyncio.wait_for(
+            research_action.run(request.request, plan_result.content),
+            timeout=180
+        )
+        logger.info(f"[{workflow_id}] Research completed")
         
         # Execute Write (code-assistant model)
+        logger.info(f"[{workflow_id}] Starting writing stage...")
         workflows[workflow_id]["current_stage"] = "writing"
         workflows[workflow_id]["progress"] = 60
-        write_result = await write_action.run(request.request, plan_result.content, research_result.content)
+        write_result = await asyncio.wait_for(
+            write_action.run(request.request, plan_result.content, research_result.content),
+            timeout=180
+        )
+        logger.info(f"[{workflow_id}] Writing completed")
         
         # Execute Review (data-science-specialist model)
+        logger.info(f"[{workflow_id}] Starting review stage...")
         workflows[workflow_id]["current_stage"] = "reviewing"
         workflows[workflow_id]["progress"] = 80
-        review_result = await review_action.run(write_result.content)
+        review_result = await asyncio.wait_for(
+            review_action.run(write_result.content),
+            timeout=120
+        )
+        logger.info(f"[{workflow_id}] Review completed")
         
         # Execute Assemble (custom-ml-assistant model)
+        logger.info(f"[{workflow_id}] Starting assembly stage...")
         workflows[workflow_id]["current_stage"] = "assembling"
         workflows[workflow_id]["progress"] = 90
-        final_result = await assemble_action.run(
-            request.request,
-            plan_result.content,
-            research_result.content,
-            write_result.content,
-            review_result.content
+        final_result = await asyncio.wait_for(
+            assemble_action.run(
+                request.request,
+                plan_result.content,
+                research_result.content,
+                write_result.content,
+                review_result.content
+            ),
+            timeout=180
         )
+        logger.info(f"[{workflow_id}] Assembly completed")
         
         # Complete
         workflows[workflow_id]["status"] = "completed"
@@ -303,6 +328,11 @@ async def execute_workflow(workflow_id: str, request: WorkflowRequest):
         response_cache.set(request.request, request.content_type, request.tone, final_result.content)
         logger.info(f"Workflow {workflow_id} completed and cached")
         
+    except asyncio.TimeoutError as e:
+        error_msg = f"Workflow timed out at stage: {workflows[workflow_id].get('current_stage', 'unknown')}"
+        logger.error(f"Workflow {workflow_id} timeout: {error_msg}")
+        workflows[workflow_id]["status"] = "failed"
+        workflows[workflow_id]["error"] = error_msg
     except Exception as e:
         logger.error(f"Workflow {workflow_id} failed: {str(e)}", exc_info=True)
         workflows[workflow_id]["status"] = "failed"

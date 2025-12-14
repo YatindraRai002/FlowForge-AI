@@ -21,19 +21,18 @@ class ResearchAction(Action):
             ActionOutput with research findings
         """
         
-        prompt = f"""Based on this marketing plan for "{request}", conduct thorough research.
+        prompt = f"""Research task for: "{request}"
 
-Plan from Planner Agent:
-{plan_text}
+Plan summary: {plan_text[:500]}...
 
-Your task as the Researcher:
-1. Identify key trends and insights relevant to the plan
-2. Provide statistics or data points that support the message
-3. Analyze competitor landscape and market positioning
-4. Understand pain points and customer needs
-5. Find unique angles or fresh perspectives
+Provide concise research findings:
+1. 2-3 key market trends
+2. 2-3 relevant statistics or data points  
+3. Main competitor insights
+4. Top customer pain points
+5. One unique angle
 
-Provide comprehensive research findings that will help the Writer create compelling content."""
+Keep response under 400 words and focus on actionable insights."""
 
         response = await self._aask(prompt)
         
