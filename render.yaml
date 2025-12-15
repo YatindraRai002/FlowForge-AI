@@ -1,12 +1,13 @@
 services:
-  # Frontend Static Site
+  # Frontend Web Service (Node.js)
   - type: web
     name: flowforge-ai
-    env: static
+    env: node
     region: oregon
     buildCommand: npm install && npm run build
+    startCommand: npm run start
     staticPublishPath: ./dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+
