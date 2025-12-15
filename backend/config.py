@@ -45,7 +45,13 @@ class AppConfig(BaseModel):
     # Server Settings
     host: str = "0.0.0.0"
     port: int = 8000
-    cors_origins: list = ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"]
+    cors_origins: list = [
+        "http://localhost:3000", 
+        "http://localhost:3001", 
+        "http://localhost:3002",
+        "https://flowforge-ai.onrender.com",
+        "*"  # Allow all origins for Render deployment
+    ]
     
     # Workflow Settings
     max_concurrent_workflows: int = 5

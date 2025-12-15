@@ -1,4 +1,21 @@
 services:
+  # Backend API Service (Python)
+  - type: web
+    name: flowforge-backend
+    env: python
+    region: oregon
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: LLM_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OLLAMA_BASE_URL
+        value: http://localhost:11434
+
   # Frontend Web Service (Node.js)
   - type: web
     name: flowforge-ai
@@ -10,4 +27,9 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 22.12.0
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: flowforge-backend
+          property: url
 

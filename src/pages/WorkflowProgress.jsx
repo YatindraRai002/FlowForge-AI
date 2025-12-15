@@ -104,7 +104,8 @@ const WorkflowProgress = () => {
 
     // Try SSE first for real-time updates
     try {
-      eventSource = new EventSource(`http://localhost:8000/api/workflow/stream/${workflowId}`);
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      eventSource = new EventSource(`${API_URL}/api/workflow/stream/${workflowId}`);
       
       eventSource.onmessage = (event) => {
         try {
