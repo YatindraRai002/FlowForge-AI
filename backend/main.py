@@ -1,11 +1,14 @@
 """FastAPI Application - MetaGPT Architecture"""
 from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from schema import UserRequest, WorkflowState
 from orchestrator import orchestrator
 from config import config
 import asyncio
+import json
+from typing import AsyncIterator
 
 app = FastAPI(
     title="FlowForge AI - Multi-Agent Content Creator",
@@ -131,6 +134,46 @@ async def get_workflow_status(workflow_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/workflow/stream/{workflow_id}")
+async def stream_workflow_status(workflow_id: str):
+    """Server-Sent Events stream for real-time workflow updates"""
+    async def event_generator() -> AsyncIterator[str]:
+        last_status = None
+        while True:
+            state = orchestrator.get_workflow_status(workflow_id)
+            
+            if not state:
+                yield f'data: {{"error": "Workflow not found"}}\n\n'
+                break
+            
+            current_status = {
+                "status": state.status,
+                "current_stage": state.current_stage,
+                "progress": state.progress,
+                "error": state.error
+            }
+            
+            # Only send if status changed
+            status_tuple = (current_status["status"], current_status["current_stage"], current_status["progress"])
+            if status_tuple != last_status:
+                yield f"data: {json.dumps(current_status)}\n\n"
+                last_status = status_tuple
+            
+            # Stop streaming if workflow is done
+            if state.status in ["completed", "error"]:
+                break
+            
+            await asyncio.sleep(0.5)  # Check every 500ms
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        }
+    )
+
 @app.get("/api/workflow/result/{workflow_id}")
 async def get_workflow_result(workflow_id: str):
     """Get final result of a completed workflow"""
@@ -148,10 +191,51 @@ async def get_workflow_result(workflow_id: str):
                     detail=f"Workflow not completed yet. Current stage: {state.current_stage}"
                 )
         
+        # Parse the result into structured format for frontend
+        result_text = result if isinstance(result, str) else str(result)
+        
+        # Extract title (first # heading)
+        title = "Marketing Brief"
+        summary = ""
+        body = result_text
+        
+        lines = result_text.split('\n')
+        for i, line in enumerate(lines):
+            if line.startswith('# '):
+                title = line.replace('# ', '').strip()
+                body = '\n'.join(lines[i+1:]).strip()
+                break
+        
+        # Extract executive summary
+        if 'executive summary' in result_text.lower():
+            for i, line in enumerate(lines):
+                if 'executive summary' in line.lower():
+                    summary_lines = []
+                    for j in range(i+1, min(i+10, len(lines))):
+                        if lines[j].startswith('#'):
+                            break
+                        if lines[j].strip():
+                            summary_lines.append(lines[j].strip())
+                        if len(summary_lines) >= 3:
+                            break
+                    summary = ' '.join(summary_lines)
+                    break
+        
+        if not summary:
+            for line in lines:
+                if line.strip() and not line.startswith('#'):
+                    summary = line.strip()
+                    break
+        
         return {
             "workflow_id": workflow_id,
             "status": "completed",
-            "data": result
+            "result": {
+                "title": title,
+                "summary": summary[:300] if summary else "AI-generated marketing brief",
+                "body": body,
+                "raw": result_text
+            }
         }
     
     except HTTPException:
@@ -192,4 +276,5 @@ if __name__ == "__main__":
         port=config.port,
         log_level=config.log_level.lower()
     )
+
 

@@ -8,36 +8,28 @@ class AssembleAction(Action):
         super().__init__(llm, name="Assembler")
         self.desc = "Formats content into final polished output"
         
-    async def run(self, request: str, plan_text: str, research_text: str, content_text: str, review_text: str) -> ActionOutput:
+    async def run(self, review_data: dict, format_type: str, request: str) -> ActionOutput:
         """
         Assemble final formatted output
         
         Args:
+            review_data: Reviewed content dict from Critic Agent
+            format_type: Desired output format
             request: Original user request
-            plan_text: Plan from Planner Agent
-            research_text: Research from Researcher Agent
-            content_text: Content from Writer Agent
-            review_text: Reviewed content from Critic Agent
             
         Returns:
             ActionOutput with final formatted content
         """
         
+        reviewed_content = review_data.get('reviewed_content', str(review_data))
+        
         prompt = f"""You are the Assembler Agent. Create the final polished marketing brief.
 
 Original Request: {request}
+Format: {format_type}
 
-Plan from Planner Agent:
-{plan_text}
-
-Research from Researcher Agent:
-{research_text}
-
-Content from Writer Agent:
-{content_text}
-
-Reviewed Version from Critic Agent:
-{review_text}
+Reviewed Content from Critic Agent:
+{reviewed_content}
 
 Your task as the Assembler:
 Create a final, polished, professional marketing brief in clean Markdown format.
@@ -49,7 +41,9 @@ Create a final, polished, professional marketing brief in clean Markdown format.
 
 Return the final marketing brief in Markdown format."""
 
+        print(f"[Assembler] Formatting final output as {format_type}...")
         response = await self._aask(prompt)
+        print(f"[Assembler] Assembly complete ({len(response)} chars)")
         
         # Clean up the response
         final_content = response.strip()
@@ -59,13 +53,15 @@ Return the final marketing brief in Markdown format."""
             final_content = final_content[3:]
         if final_content.endswith("```"):
             final_content = final_content[:-3]
+        
         final_content = final_content.strip()
         
         return ActionOutput(
             content=final_content,
             metadata={
                 "action": "assemble",
-                "request": request
+                "format": format_type
             }
         )
+
 

@@ -16,7 +16,7 @@ export const workflowAPI = {
         request,
         tone,
         length,
-        content_type
+        format: content_type
       }),
     });
     

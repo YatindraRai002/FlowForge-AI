@@ -10,14 +10,15 @@ class PlanAction(Action):
         super().__init__(llm, name="Planner")
         self.desc = "Creates strategic plans using proven marketing frameworks"
         
-    async def run(self, request: str, content_type: str, tone: str) -> ActionOutput:
+    async def run(self, request: str, tone: str, length: str, format_type: str) -> ActionOutput:
         """
         Create a strategic plan
         
         Args:
             request: User's content request
-            content_type: Type of content (blog_post, social_media, etc.)
             tone: Desired tone (professional, casual, formal)
+            length: Content length (short, medium, long)
+            format_type: Output format (marketing brief, blog post, etc.)
             
         Returns:
             ActionOutput with JSON plan
@@ -25,8 +26,9 @@ class PlanAction(Action):
         prompt = f"""Create a strategic marketing plan for: {request}
 
 Requirements:
-- Content Type: {content_type}
+- Format: {format_type}
 - Tone: {tone}
+- Length: {length}
 
 Respond with a simple structured plan containing:
 1. GOAL: The main objective
@@ -42,10 +44,11 @@ Keep it concise and actionable."""
         
         # Create a simple structured output
         plan_data = {
-            "goal": f"Create {content_type} about {request}",
+            "goal": f"Create {format_type} about {request}",
             "audience": "Target audience based on content type",
             "tone": tone,
-            "content_type": content_type,
+            "length": length,
+            "format_type": format_type,
             "plan": response,
             "sections": [
                 {"id": "intro", "title": "Introduction"},
@@ -60,6 +63,6 @@ Keep it concise and actionable."""
                 "action": "plan",
                 "request": request,
                 "tone": tone,
-                "content_type": content_type
+                "content_type": format_type
             }
         )

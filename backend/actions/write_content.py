@@ -9,22 +9,29 @@ class WriteContentAction(Action):
         super().__init__(llm, name="Writer")
         self.desc = "Creates compelling content from plans and research"
         
-    async def run(self, request: str, plan_text: str, research_text: str) -> ActionOutput:
+    async def run(self, plan_data: dict, research_data: dict, tone: str, length: str) -> ActionOutput:
         """
         Write content based on plan and research
         
         Args:
-            request: Original user request
-            plan_text: Strategic plan from Planner
-            research_text: Research findings from Researcher
+            plan_data: Strategic plan dict from Planner
+            research_data: Research dict from Researcher
+            tone: Desired tone
+            length: Content length
             
         Returns:
-            ActionOutput with written content
+            ActionOutput with written content as JSON
         """
         
-        prompt = f"""You are the Writer Agent. Create compelling marketing content based on the plan and research.
+        plan_text = plan_data.get('plan', str(plan_data))
+        research_text = research_data.get('research', str(research_data))
+        request = plan_data.get('goal', 'content creation')
+        
+        prompt = f"""You are the Writer Agent. Create compelling marketing content.
 
-Original Request: {request}
+Goal: {request}
+Tone: {tone}
+Length: {length}
 
 Plan from Planner Agent:
 {plan_text}
@@ -37,13 +44,20 @@ Write a comprehensive, engaging marketing brief that incorporates the strategic 
 Make it professional, persuasive, and actionable.
 Structure the content logically with clear sections."""
 
+        print(f"[Writer] Creating content (tone: {tone}, length: {length})...")
         response = await self._aask(prompt)
+        print(f"[Writer] Content created ({len(response)} chars)")
         
-        # Return the content as text
+        # Return the content as dict
+        write_data = {
+            "content": response.strip(),
+            "tone": tone,
+            "length": length
+        }
+        
         return ActionOutput(
-            content=response.strip(),
+            content=json.dumps(write_data, indent=2),
             metadata={
-                "action": "write",
-                "request": request
+                "action": "write"
             }
         )

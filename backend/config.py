@@ -64,7 +64,7 @@ def get_config() -> AppConfig:
     """Get application configuration from environment"""
     llm_config = LLMConfig(
         provider=os.getenv("LLM_PROVIDER", "ollama"),
-        model=os.getenv("LLM_MODEL", "llama2"),
+        model=os.getenv("LLM_MODEL", "llama3.2:3b"),
         temperature=float(os.getenv("LLM_TEMPERATURE", "0.7")),
         max_tokens=int(os.getenv("LLM_MAX_TOKENS", "2048")),
         timeout=int(os.getenv("LLM_TIMEOUT", "120")),
