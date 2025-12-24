@@ -554,21 +554,24 @@ pip install -r requirements.txt
 copy .env.example .env          # Windows
 # cp .env.example .env          # macOS/Linux
 
-# Edit .env and add:
+# Edit backend/.env and add your API key:
 # GEMINI_API_KEY=your_actual_api_key_here
 # LLM_PROVIDER=gemini
+# LLM_MODEL=gemini-1.5-flash
 
 # 4️⃣ Frontend setup
 cd ..
 npm install
 
 # 5️⃣ Start application
-START_FLOWFORGE.bat             # Windows (Easy)
+START_FLOWFORGE.bat             # Windows (Easy - Auto setup!)
 
 # Or manually:
-# Terminal 1: cd backend && python main.py
+# Terminal 1: cd backend && .venv\Scripts\activate && python main.py
 # Terminal 2: npm run dev
 ```
+
+> **⚠️ IMPORTANT:** After cloning, you MUST create `backend/.env` from `backend/.env.example` and add your Gemini API key. See [SETUP.md](./SETUP.md) for detailed instructions.
 
 ### 🌐 Access Your Application
 
