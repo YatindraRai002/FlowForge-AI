@@ -44,27 +44,29 @@ copy .env.example .env    # Windows
 
 Edit `backend/.env` and choose ONE option:
 
-**Option A: Using Gemini (Recommended - No local setup needed)**
-```env
-LLM_PROVIDER=gemini
-LLM_MODEL=gemini-1.5-flash
-GEMINI_API_KEY=your_actual_gemini_api_key_here
-```
-Get free API key: https://makersuite.google.com/app/apikey
-
-**Option B: Using Ollama (Local LLM)**
+**Option A: Using Ollama (Recommended - Free, runs locally)**
 ```env
 LLM_PROVIDER=ollama
 LLM_MODEL=llama3.2:3b
 OLLAMA_BASE_URL=http://localhost:11434
 ```
 
-If using Ollama, install and start it:
+Install and start Ollama:
 ```bash
-# Install Ollama from https://ollama.ai
-# Then pull the model:
+# 1. Install Ollama from https://ollama.ai
+# 2. Pull the model:
 ollama pull llama3.2:3b
+# 3. Ollama will auto-start, or run:
+ollama serve
 ```
+
+**Option B: Using Gemini (Cloud - Requires API key)**
+```env
+LLM_PROVIDER=gemini
+LLM_MODEL=gemini-1.5-flash
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+```
+Get free API key: https://makersuite.google.com/app/apikey
 
 ### 4️⃣ Frontend Setup
 
