@@ -1,3 +1,0 @@
-[2025-12-09 16:22:48,929] metagpt - ERROR - main_metagpt.py:167 - Workflow 921daeca-bc70-4e72-b26b-97bed04f3834 failed: PlanAction.run() missing 1 required positional argument: 'format_type'
-[2025-12-09 16:22:48,932] metagpt - ERROR - main_metagpt.py:167 - Workflow e4856300-d5fd-4479-a6c2-efd8b11f1cd5 failed: PlanAction.run() missing 1 required positional argument: 'format_type'
-[2025-12-09 16:24:01,589] metagpt - ERROR - main_metagpt.py:167 - Workflow af320eac-eb37-45b2-8c54-1760c9203628 failed: PlanAction.run() missing 1 required positional argument: 'format_type'

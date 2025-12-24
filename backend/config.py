@@ -49,8 +49,7 @@ class AppConfig(BaseModel):
         "http://localhost:3000", 
         "http://localhost:3001", 
         "http://localhost:3002",
-        "https://flowforge-ai.onrender.com",
-        "*"  # Allow all origins for Render deployment
+        "https://flowforge-ai.onrender.com"
     ]
     
     # Workflow Settings
@@ -71,11 +70,11 @@ def get_config() -> AppConfig:
         ollama_base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         gemini_api_key=os.getenv("GEMINI_API_KEY"),
         # Load specialized models from environment
-        planner_model=os.getenv("PLANNER_MODEL", "business-analyst"),
-        researcher_model=os.getenv("RESEARCHER_MODEL", "research-assistant"),
-        writer_model=os.getenv("WRITER_MODEL", "code-assistant"),
-        reviewer_model=os.getenv("REVIEWER_MODEL", "data-science-specialist"),
-        assembler_model=os.getenv("ASSEMBLER_MODEL", "custom-ml-assistant")
+        planner_model=os.getenv("PLANNER_MODEL", "llama3.2:3b"),
+        researcher_model=os.getenv("RESEARCHER_MODEL", "llama3.2:3b"),
+        writer_model=os.getenv("WRITER_MODEL", "llama3.2:3b"),
+        reviewer_model=os.getenv("REVIEWER_MODEL", "llama3.2:3b"),
+        assembler_model=os.getenv("ASSEMBLER_MODEL", "llama3.2:3b")
     )
     
     return AppConfig(
