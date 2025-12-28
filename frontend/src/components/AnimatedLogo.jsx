@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Sparkles, Zap, Brain } from 'lucide-react'
+import logo from '../data/logo.png'
 
 const AnimatedLogo = ({ className = "" }) => {
   return (
@@ -9,21 +9,13 @@ const AnimatedLogo = ({ className = "" }) => {
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Professional hexagon frame */}
-        <div className="absolute inset-0">
-          <svg viewBox="0 0 100 100" className="w-full h-full">
-            <polygon 
-              points="50,5 90,25 90,75 50,95 10,75 10,25" 
-              className="fill-none stroke-neon-blue stroke-2"
-            />
-          </svg>
-        </div>
-        
-        {/* Letter "M" for Multi-Agent */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-bold text-neon-blue">M</span>
-        </div>
-        
+        {/* FlowForge Logo */}
+        <img
+          src={logo}
+          alt="FlowForge Logo"
+          className="w-full h-full object-contain"
+        />
+
         {/* Subtle pulse effect */}
         <motion.div
           className="absolute inset-0 rounded-lg"

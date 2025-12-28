@@ -15,59 +15,54 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-3 group">
             <AnimatedLogo />
             <span className="text-xl font-bold text-gradient">
-              Multi-Agent Automator
+              FlowForge AI
             </span>
           </Link>
 
           <div className="flex items-center gap-6">
             <div className="hidden md:flex items-center gap-6">
-              <Link 
-                to="/" 
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/') 
-                    ? 'text-neon-blue' 
+              <Link
+                to="/"
+                className={`text-sm font-medium transition-colors ${isActive('/')
+                    ? 'text-neon-blue'
                     : 'text-gray-400 hover:text-white'
-                }`}
+                  }`}
               >
                 Home
               </Link>
-              <Link 
-                to="/dashboard" 
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/dashboard') 
-                    ? 'text-neon-blue' 
+              <Link
+                to="/dashboard"
+                className={`text-sm font-medium transition-colors ${isActive('/dashboard')
+                    ? 'text-neon-blue'
                     : 'text-gray-400 hover:text-white'
-                }`}
+                  }`}
               >
                 Dashboard
               </Link>
-              <Link 
-                to="/create" 
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/create') 
-                    ? 'text-neon-blue' 
+              <Link
+                to="/create"
+                className={`text-sm font-medium transition-colors ${isActive('/create')
+                    ? 'text-neon-blue'
                     : 'text-gray-400 hover:text-white'
-                }`}
+                  }`}
               >
                 Create Campaign
               </Link>
-              <Link 
-                to="/workflow" 
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/workflow') 
-                    ? 'text-neon-blue' 
+              <Link
+                to="/workflow"
+                className={`text-sm font-medium transition-colors ${isActive('/workflow')
+                    ? 'text-neon-blue'
                     : 'text-gray-400 hover:text-white'
-                }`}
+                  }`}
               >
                 Workflow
               </Link>
-              <Link 
-                to="/pricing" 
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/pricing') 
-                    ? 'text-neon-blue' 
+              <Link
+                to="/pricing"
+                className={`text-sm font-medium transition-colors ${isActive('/pricing')
+                    ? 'text-neon-blue'
                     : 'text-gray-400 hover:text-white'
-                }`}
+                  }`}
               >
                 Pricing
               </Link>
