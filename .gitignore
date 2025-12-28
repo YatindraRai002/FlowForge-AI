@@ -66,3 +66,9 @@ build/
 # Local development
 test-output.css
 startup_error.log
+
+# Test files
+backend/test_*.py
+backend/debug_*.log
+backend/backend_*.log
+backend/grok_test.json
