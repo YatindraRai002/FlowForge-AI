@@ -59,6 +59,19 @@ class LLM:
             )
             return GeminiAPI(config, api_key=kwargs.get("api_key"))
         
+        elif provider == "grok":
+            from provider.grok_api import GrokAPI
+            from flowforge_core.configs.llm_config import LLMConfig
+            
+            config = LLMConfig(
+                provider=provider,
+                model=kwargs.get("model", "grok-beta"),
+                temperature=kwargs.get("temperature", 0.7),
+                max_tokens=kwargs.get("max_tokens", 2048)
+            )
+            return GrokAPI(config, api_key=kwargs.get("api_key"))
+        
         else:
             raise ValueError(f"Unknown LLM provider: {provider}")
+
 

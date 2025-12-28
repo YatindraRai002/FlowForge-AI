@@ -9,7 +9,7 @@ load_dotenv()
 
 class LLMConfig(BaseModel):
     """LLM Provider Configuration"""
-    provider: Literal["ollama", "gemini"] = "ollama"
+    provider: Literal["ollama", "gemini", "grok", "groq"] = "ollama"
     model: str = "llama2"
     temperature: float = 0.7
     max_tokens: int = 2048
@@ -18,6 +18,8 @@ class LLMConfig(BaseModel):
     # Provider-specific settings
     ollama_base_url: str = "http://localhost:11434"
     gemini_api_key: Optional[str] = None
+    grok_api_key: Optional[str] = None
+    groq_api_key: Optional[str] = None
     
     # Multi-model configuration for specialized agents
     planner_model: str = "business-analyst"
@@ -25,6 +27,7 @@ class LLMConfig(BaseModel):
     writer_model: str = "code-assistant"
     reviewer_model: str = "data-science-specialist"
     assembler_model: str = "custom-ml-assistant"
+
     
     def get_model_for_agent(self, agent_type: str) -> str:
         """Get the specialized model for a given agent type"""
@@ -69,6 +72,8 @@ def get_config() -> AppConfig:
         timeout=int(os.getenv("LLM_TIMEOUT", "120")),
         ollama_base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         gemini_api_key=os.getenv("GEMINI_API_KEY"),
+        grok_api_key=os.getenv("GROK_API_KEY"),
+        groq_api_key=os.getenv("GROQ_API_KEY"),
         # Load specialized models from environment
         planner_model=os.getenv("PLANNER_MODEL", "llama3.2:3b"),
         researcher_model=os.getenv("RESEARCHER_MODEL", "llama3.2:3b"),

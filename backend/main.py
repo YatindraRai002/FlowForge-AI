@@ -74,6 +74,12 @@ async def start_workflow(request: StartWorkflowRequest, background_tasks: Backgr
     """Start a new workflow"""
     
     try:
+        print(f"\n{'='*50}")
+        print(f"🚀 Starting new workflow")
+        print(f"Request: {request.request[:100]}...")
+        print(f"Tone: {request.tone}, Length: {request.length}, Format: {request.format}")
+        print(f"{'='*50}\n")
+        
         # Create user request
         user_request = UserRequest(
             request=request.request,
@@ -84,13 +90,22 @@ async def start_workflow(request: StartWorkflowRequest, background_tasks: Backgr
         
         # Create workflow
         workflow_id = await orchestrator.create_workflow(user_request)
+        print(f"✅ Workflow created with ID: {workflow_id}")
         
-        # Start workflow execution in background
-        background_tasks.add_task(
-            orchestrator.execute_workflow,
-            workflow_id,
-            user_request
-        )
+        # Start workflow execution in background using asyncio.create_task
+        # This properly handles async functions unlike BackgroundTasks
+        async def run_workflow():
+            try:
+                print(f"🔄 Starting workflow execution for {workflow_id}")
+                await orchestrator.execute_workflow(workflow_id, user_request)
+                print(f"✅ Workflow {workflow_id} completed successfully")
+            except Exception as e:
+                print(f"❌ Workflow {workflow_id} failed with error: {str(e)}")
+                import traceback
+                traceback.print_exc()
+        
+        # Create the task
+        asyncio.create_task(run_workflow())
         
         return StartWorkflowResponse(
             workflow_id=workflow_id,
@@ -99,6 +114,9 @@ async def start_workflow(request: StartWorkflowRequest, background_tasks: Backgr
         )
     
     except Exception as e:
+        print(f"❌ Failed to start workflow: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/workflow/status/{workflow_id}")

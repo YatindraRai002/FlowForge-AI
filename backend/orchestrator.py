@@ -8,6 +8,7 @@ from roles.content_creator import ContentCreatorRole
 from provider.base_llm import BaseLLM, LLMConfig
 from provider.ollama_api import OllamaAPI
 from provider.gemini_api import GeminiAPI
+from provider.grok_api import GrokAPI
 from config import config
 
 class WorkflowOrchestrator:
@@ -37,6 +38,17 @@ class WorkflowOrchestrator:
                 raise ValueError("GEMINI_API_KEY not set in environment")
             print(f"[OK] Initializing Gemini LLM with model: {config.llm.model}")
             return GeminiAPI(llm_config_data, api_key=config.llm.gemini_api_key)
+        elif config.llm.provider == "grok":
+            if not config.llm.grok_api_key:
+                raise ValueError("GROK_API_KEY not set in environment")
+            print(f"[OK] Initializing Grok LLM with model: {config.llm.model}")
+            return GrokAPI(llm_config_data, api_key=config.llm.grok_api_key)
+        elif config.llm.provider == "groq":
+            if not config.llm.groq_api_key:
+                raise ValueError("GROQ_API_KEY not set in environment")
+            print(f"[OK] Initializing Groq LLM with model: {config.llm.model}")
+            from provider.groq_api import GroqAPI
+            return GroqAPI(llm_config_data, api_key=config.llm.groq_api_key)
         else:
             raise ValueError(f"Unknown LLM provider: {config.llm.provider}")
     
@@ -77,12 +89,20 @@ class WorkflowOrchestrator:
             raise ValueError(f"Workflow {workflow_id} not found")
         
         try:
+            print(f"\n{'='*50}")
+            print(f"🔄 Executing workflow {workflow_id}")
+            print(f"Request: {user_request.request[:100]}...")
+            print(f"{'='*50}\n")
+            
             # Update status
             state.status = "in_progress"
             state.progress = 5
+            print(f"✅ Workflow status updated to in_progress")
             
             # Create Content Creator Role
+            print(f"🤖 Creating ContentCreatorRole with LLM provider: {config.llm.provider}")
             creator_role = ContentCreatorRole(self.llm)
+            print(f"✅ ContentCreatorRole created successfully")
             
             # Define progress callback
             async def update_progress(stage: str, message: str):
@@ -123,6 +143,7 @@ class WorkflowOrchestrator:
                 state.updated_at = datetime.now()
             
             # Execute the role
+            print(f"🚀 Starting creator_role.run()...")
             results = await creator_role.run(
                 request=user_request.request,
                 tone=user_request.tone,
@@ -130,6 +151,7 @@ class WorkflowOrchestrator:
                 format_type=user_request.format,
                 on_progress=update_progress
             )
+            print(f"✅ creator_role.run() completed successfully")
             
             # Mark all agents as completed
             for activity in state.agent_activities:

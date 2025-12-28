@@ -38,9 +38,16 @@ Respond with a simple structured plan containing:
 
 Keep it concise and actionable."""
 
-        print(f"[Planner] Creating plan for: {request[:50]}...")
+        print(f"[Planner] Creating plan for: {request[:50]}...", flush=True)
+        print(f"[Planner] About to call LLM with prompt length: {len(prompt)}", flush=True)
+        print(f"[Planner] LLM instance: {type(self.llm).__name__}", flush=True)
+        
+        # Call LLM - let errors propagate
         response = await self._aask(prompt)
-        print(f"[Planner] Plan created ({len(response)} chars)")
+        print(f"[Planner] LLM response received ({len(response)} chars)", flush=True)
+        print(f"[Planner] Response preview: {response[:200]}...", flush=True)
+        
+        print(f"[Planner] Plan created ({len(response)} chars)", flush=True)
         
         # Create a simple structured output
         plan_data = {

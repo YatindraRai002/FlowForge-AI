@@ -172,7 +172,6 @@ const CreateCampaign = () => {
               <Button 
                 type="submit" 
                 size="lg"
-                disabled={!formData.product || !formData.audience || formData.channels.length === 0}
                 className="min-w-[250px]"
               >
                 <Sparkles className="w-5 h-5" />
