@@ -1,61 +1,39 @@
-"""Configuration Management - MetaGPT Style"""
+"""Application Configuration - Groq Only"""
 import os
-from typing import Optional, Literal
 from pydantic import BaseModel
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
+from pydantic_settings import BaseSettings
+from typing import Optional
 
 class LLMConfig(BaseModel):
-    """LLM Provider Configuration"""
-    provider: Literal["ollama", "gemini", "grok", "groq"] = "ollama"
-    model: str = "llama2"
-    temperature: float = 0.7
+    """LLM Configuration - Groq Only (No Provider Switching)"""
+    # Note: Provider is hardcoded in llm_factory.py, not configurable
+    model: str = "llama3-70b-8192"
+    temperature: float = 0.2
     max_tokens: int = 2048
     timeout: int = 120
     
-    # Provider-specific settings
-    ollama_base_url: str = "http://localhost:11434"
-    gemini_api_key: Optional[str] = None
-    grok_api_key: Optional[str] = None
+    # Groq API Key (loaded from environment)
     groq_api_key: Optional[str] = None
     
-    # Multi-model configuration for specialized agents
-    planner_model: str = "business-analyst"
-    researcher_model: str = "research-assistant"
-    writer_model: str = "code-assistant"
-    reviewer_model: str = "data-science-specialist"
-    assembler_model: str = "custom-ml-assistant"
+    # Specialized models (optional overrides)
+    planner_model: str = "llama3-70b-8192"
+    researcher_model: str = "llama3-70b-8192"
+    writer_model: str = "llama3-70b-8192"
+    reviewer_model: str = "llama3-70b-8192"
+    assembler_model: str = "llama3-70b-8192"
 
-    
-    def get_model_for_agent(self, agent_type: str) -> str:
-        """Get the specialized model for a given agent type"""
-        model_mapping = {
-            "planner": self.planner_model,
-            "researcher": self.researcher_model,
-            "writer": self.writer_model,
-            "reviewer": self.reviewer_model,
-            "assembler": self.assembler_model
-        }
-        return model_mapping.get(agent_type, self.model)
+class ServerConfig(BaseModel):
+    """Server Configuration"""
+    host: str = "0.0.0.0"
+    port: int = 8000
+    reload: bool = False
 
 class AppConfig(BaseModel):
     """Application Configuration"""
-    # LLM Settings
-    llm: LLMConfig = LLMConfig()
+    llm: LLMConfig
+    server: ServerConfig
     
-    # Server Settings
-    host: str = "0.0.0.0"
-    port: int = 8000
-    cors_origins: list = [
-        "http://localhost:3000", 
-        "http://localhost:3001", 
-        "http://localhost:3002",
-        "https://flowforge-ai.onrender.com"
-    ]
-    
-    # Workflow Settings
+    # Workflow settings
     max_concurrent_workflows: int = 5
     workflow_timeout: int = 600  # 10 minutes
     
@@ -65,35 +43,32 @@ class AppConfig(BaseModel):
 def get_config() -> AppConfig:
     """Get application configuration from environment"""
     llm_config = LLMConfig(
-        provider=os.getenv("LLM_PROVIDER", "ollama"),
-        model=os.getenv("LLM_MODEL", "llama3.2:3b"),
-        temperature=float(os.getenv("LLM_TEMPERATURE", "0.7")),
+        model=os.getenv("LLM_MODEL", "llama3-70b-8192"),
+        temperature=float(os.getenv("LLM_TEMPERATURE", "0.2")),
         max_tokens=int(os.getenv("LLM_MAX_TOKENS", "2048")),
         timeout=int(os.getenv("LLM_TIMEOUT", "120")),
-        ollama_base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-        gemini_api_key=os.getenv("GEMINI_API_KEY"),
-        grok_api_key=os.getenv("GROK_API_KEY"),
-        groq_api_key=os.getenv("GROQ_API_KEY"),
-        # Load specialized models from environment
-        planner_model=os.getenv("PLANNER_MODEL", "llama3.2:3b"),
-        researcher_model=os.getenv("RESEARCHER_MODEL", "llama3.2:3b"),
-        writer_model=os.getenv("WRITER_MODEL", "llama3.2:3b"),
-        reviewer_model=os.getenv("REVIEWER_MODEL", "llama3.2:3b"),
-        assembler_model=os.getenv("ASSEMBLER_MODEL", "llama3.2:3b")
+        groq_api_key=os.getenv("GROQ_API_KEY"),  # FIXED: Was GROK_API_KEY
+        # Specialized models
+        planner_model=os.getenv("PLANNER_MODEL", "llama3-70b-8192"),
+        researcher_model=os.getenv("RESEARCHER_MODEL", "llama3-70b-8192"),
+        writer_model=os.getenv("WRITER_MODEL", "llama3-70b-8192"),
+        reviewer_model=os.getenv("REVIEWER_MODEL", "llama3-70b-8192"),
+        assembler_model=os.getenv("ASSEMBLER_MODEL", "llama3-70b-8192")
+    )
+    
+    server_config = ServerConfig(
+        host=os.getenv("HOST", "0.0.0.0"),
+        port=int(os.getenv("PORT", "8000")),
+        reload=os.getenv("RELOAD", "false").lower() == "true"
     )
     
     return AppConfig(
         llm=llm_config,
-        host=os.getenv("HOST", "0.0.0.0"),
-        port=int(os.getenv("PORT", "8000")),
+        server=server_config,
+        max_concurrent_workflows=int(os.getenv("MAX_CONCURRENT_WORKFLOWS", "5")),
+        workflow_timeout=int(os.getenv("WORKFLOW_TIMEOUT", "600")),
         log_level=os.getenv("LOG_LEVEL", "INFO")
     )
 
 # Global config instance
 config = get_config()
-
-# Legacy support - keep these for backward compatibility
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-PORT = int(os.getenv("PORT", 8000))
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "ollama")
-LLM_MODEL = os.getenv("LLM_MODEL", "llama2")

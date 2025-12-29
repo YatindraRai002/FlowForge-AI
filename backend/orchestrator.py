@@ -5,10 +5,7 @@ from datetime import datetime
 from typing import Dict, Optional
 from schema import WorkflowState, AgentActivity, UserRequest
 from roles.content_creator import ContentCreatorRole
-from provider.base_llm import BaseLLM, LLMConfig
-from provider.ollama_api import OllamaAPI
-from provider.gemini_api import GeminiAPI
-from provider.grok_api import GrokAPI
+from llm_factory import get_llm  # Centralized LLM factory - Groq only
 from config import config
 
 class WorkflowOrchestrator:
@@ -19,38 +16,9 @@ class WorkflowOrchestrator:
     
     def __init__(self):
         self.workflows: Dict[str, WorkflowState] = {}
-        self.llm = self._initialize_llm()
+        self.llm = get_llm()  # Use centralized factory - no provider switching
         
-    def _initialize_llm(self) -> BaseLLM:
-        """Initialize LLM based on configuration"""
-        llm_config_data = LLMConfig(
-            model=config.llm.model,
-            temperature=config.llm.temperature,
-            max_tokens=config.llm.max_tokens,
-            timeout=config.llm.timeout
-        )
-        
-        if config.llm.provider == "ollama":
-            print(f"[OK] Initializing Ollama LLM with model: {config.llm.model}")
-            return OllamaAPI(llm_config_data, base_url=config.llm.ollama_base_url)
-        elif config.llm.provider == "gemini":
-            if not config.llm.gemini_api_key:
-                raise ValueError("GEMINI_API_KEY not set in environment")
-            print(f"[OK] Initializing Gemini LLM with model: {config.llm.model}")
-            return GeminiAPI(llm_config_data, api_key=config.llm.gemini_api_key)
-        elif config.llm.provider == "grok":
-            if not config.llm.grok_api_key:
-                raise ValueError("GROK_API_KEY not set in environment")
-            print(f"[OK] Initializing Grok LLM with model: {config.llm.model}")
-            return GrokAPI(llm_config_data, api_key=config.llm.grok_api_key)
-        elif config.llm.provider == "groq":
-            if not config.llm.groq_api_key:
-                raise ValueError("GROQ_API_KEY not set in environment")
-            print(f"[OK] Initializing Groq LLM with model: {config.llm.model}")
-            from provider.groq_api import GroqAPI
-            return GroqAPI(llm_config_data, api_key=config.llm.groq_api_key)
-        else:
-            raise ValueError(f"Unknown LLM provider: {config.llm.provider}")
+
     
     async def create_workflow(self, user_request: UserRequest) -> str:
         """
