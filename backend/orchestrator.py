@@ -87,6 +87,7 @@ class WorkflowOrchestrator:
             # Update status
             state.status = "in_progress"
             state.progress = 5
+            state.current_stage = "planning"
             print(f"✅ Workflow status updated to in_progress")
             await self.emit_event(workflow_id, state)
             
