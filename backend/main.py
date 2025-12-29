@@ -156,32 +156,38 @@ async def get_workflow_status(workflow_id: str):
 async def stream_workflow_status(workflow_id: str):
     """Server-Sent Events stream for real-time workflow updates"""
     async def event_generator() -> AsyncIterator[str]:
-        last_status = None
-        while True:
-            state = orchestrator.get_workflow_status(workflow_id)
-            
-            if not state:
-                yield f'data: {{"error": "Workflow not found"}}\n\n'
-                break
-            
-            current_status = {
+        queue = orchestrator.get_queue(workflow_id)
+        
+        # Send initial status if it exists
+        state = orchestrator.get_workflow_status(workflow_id)
+        if state:
+            initial_status = {
                 "status": state.status,
                 "current_stage": state.current_stage,
                 "progress": state.progress,
+                "agent_activities": [
+                    {
+                        "agent_name": a.agent_name,
+                        "status": a.status,
+                        "current_task": a.current_task,
+                        "started_at": a.started_at.isoformat() if a.started_at else None,
+                        "completed_at": a.completed_at.isoformat() if a.completed_at else None
+                    }
+                    for a in state.agent_activities
+                ],
                 "error": state.error
             }
+            yield f"data: {json.dumps(initial_status)}\n\n"
+
+        while True:
+            # Wait for next event from the queue
+            event = await queue.get()
             
-            # Only send if status changed
-            status_tuple = (current_status["status"], current_status["current_stage"], current_status["progress"])
-            if status_tuple != last_status:
-                yield f"data: {json.dumps(current_status)}\n\n"
-                last_status = status_tuple
+            yield f"data: {json.dumps(event)}\n\n"
             
-            # Stop streaming if workflow is done
-            if state.status in ["completed", "error"]:
+            # Stop streaming if workflow reached a terminal state
+            if event["status"] in ["completed", "error"]:
                 break
-            
-            await asyncio.sleep(0.5)  # Check every 500ms
     
     return StreamingResponse(
         event_generator(),

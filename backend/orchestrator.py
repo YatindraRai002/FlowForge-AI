@@ -16,7 +16,35 @@ class WorkflowOrchestrator:
     
     def __init__(self):
         self.workflows: Dict[str, WorkflowState] = {}
+        self.queues: Dict[str, asyncio.Queue] = {}
         self.llm = get_llm()  # Use centralized factory - no provider switching
+        
+    def get_queue(self, workflow_id: str) -> asyncio.Queue:
+        """Get or create event queue for a workflow"""
+        if workflow_id not in self.queues:
+            self.queues[workflow_id] = asyncio.Queue()
+        return self.queues[workflow_id]
+
+    async def emit_event(self, workflow_id: str, state: WorkflowState):
+        """Emit workflow state event to the queue"""
+        queue = self.get_queue(workflow_id)
+        event = {
+            "status": state.status,
+            "current_stage": state.current_stage,
+            "progress": state.progress,
+            "agent_activities": [
+                {
+                    "agent_name": a.agent_name,
+                    "status": a.status,
+                    "current_task": a.current_task,
+                    "started_at": a.started_at.isoformat() if a.started_at else None,
+                    "completed_at": a.completed_at.isoformat() if a.completed_at else None
+                }
+                for a in state.agent_activities
+            ],
+            "error": state.error
+        }
+        await queue.put(event)
         
 
     
@@ -66,6 +94,7 @@ class WorkflowOrchestrator:
             state.status = "in_progress"
             state.progress = 5
             print(f"✅ Workflow status updated to in_progress")
+            await self.emit_event(workflow_id, state)
             
             # Create Content Creator Role
             print(f"🤖 Creating ContentCreatorRole with LLM provider: groq")
@@ -109,6 +138,7 @@ class WorkflowOrchestrator:
                 state.current_stage = stage
                 state.progress = progress
                 state.updated_at = datetime.now()
+                await self.emit_event(workflow_id, state)
             
             # Execute the role
             print(f"🚀 Starting creator_role.run()...")
@@ -133,6 +163,7 @@ class WorkflowOrchestrator:
             state.current_stage = "completed"
             state.data = results['final_content']
             state.updated_at = datetime.now()
+            await self.emit_event(workflow_id, state)
             
         except Exception as e:
             # Handle errors
@@ -153,6 +184,8 @@ class WorkflowOrchestrator:
                     last_activity.status = "error"
                     last_activity.current_task = f"Error: {error_msg}"
                     last_activity.completed_at = datetime.now()
+            
+            await self.emit_event(workflow_id, state)
             
             # Re-raise the exception as requested
             raise
