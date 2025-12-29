@@ -183,6 +183,10 @@ async def stream_workflow_status(workflow_id: str):
             print(f"[SSE] Sending initial status for {workflow_id}")
             yield f"data: {json.dumps(initial_status)}\n\n"
 
+        # TEST EVENT: Verify frontend connectivity
+        print(f"[SSE] Sending TEST event for {workflow_id}")
+        yield f"data: {json.dumps({'agent': 'TEST', 'status': 'started'})}\n\n"
+
         while True:
             try:
                 # Wait for next event from the queue

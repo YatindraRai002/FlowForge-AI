@@ -6,6 +6,7 @@ _queues = {}
 
 def get_queue(workflow_id: str) -> asyncio.Queue:
     """Get or create an event queue for a workflow"""
+    print(f"[EventBus] get_queue called for {workflow_id}. _queues ID: {id(_queues)}")
     if workflow_id not in _queues:
         print(f"[EventBus] Creating new queue for workflow: {workflow_id}")
         _queues[workflow_id] = asyncio.Queue()
