@@ -68,7 +68,7 @@ class WorkflowOrchestrator:
             print(f"✅ Workflow status updated to in_progress")
             
             # Create Content Creator Role
-            print(f"🤖 Creating ContentCreatorRole with LLM provider: {config.llm.provider}")
+            print(f"🤖 Creating ContentCreatorRole with LLM provider: groq")
             creator_role = ContentCreatorRole(self.llm)
             print(f"✅ ContentCreatorRole created successfully")
             

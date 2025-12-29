@@ -6,13 +6,14 @@ from pydantic import BaseModel
 from schema import UserRequest, WorkflowState
 from orchestrator import orchestrator
 from config import config
+from llm_factory import MODEL  # Import model constant
 import asyncio
 import json
 from typing import AsyncIterator
 
 app = FastAPI(
     title="FlowForge AI - Multi-Agent Content Creator",
-    description="MetaGPT-powered multi-agent system with Ollama/Gemini support",
+    description="LangChain Groq-powered multi-agent system",
     version="2.0.0"
 )
 
@@ -42,9 +43,8 @@ async def startup_event():
     print("="*43)
     print("FlowForge AI - MetaGPT Architecture")
     print("="*43)
-    print(f"LLM Provider: {config.llm.provider}")
-    print(f"Model: {config.llm.model}")
-    print(f"Server: http://{config.host}:{config.port}")
+    print(f"[LLM] Provider: groq | Model: {MODEL}")
+    print(f"Server: http://{config.server.host}:{config.server.port}")
     print(f"CORS: {', '.join(config.cors_origins)}")
     print("="*43)
 
@@ -55,8 +55,8 @@ async def root():
         "message": "FlowForge AI - MetaGPT Architecture",
         "version": "2.0.0",
         "architecture": "MetaGPT",
-        "provider": config.llm.provider,
-        "model": config.llm.model,
+        "provider": "groq",
+        "model": MODEL,
         "status": "running"
     }
 
@@ -65,8 +65,8 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "provider": config.llm.provider,
-        "model": config.llm.model
+        "provider": "groq",
+        "model": MODEL
     }
 
 @app.post("/api/workflow/start", response_model=StartWorkflowResponse)
@@ -284,14 +284,13 @@ async def list_workflows():
 if __name__ == "__main__":
     import uvicorn
     print("\nStarting FlowForge AI - MetaGPT Architecture\n")
-    print(f"LLM Provider: {config.llm.provider}")
-    print(f"Model: {config.llm.model}")
-    print(f"Server will run on: http://{config.host}:{config.port}\n")
+    print(f"[LLM] Provider: groq | Model: {MODEL}")
+    print(f"Server will run on: http://{config.server.host}:{config.server.port}\n")
     
     uvicorn.run(
         app,
-        host=config.host,
-        port=config.port,
+        host=config.server.host,
+        port=config.server.port,
         log_level=config.log_level.lower()
     )
 
