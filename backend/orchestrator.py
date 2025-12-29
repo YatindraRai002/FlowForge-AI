@@ -16,18 +16,12 @@ class WorkflowOrchestrator:
     
     def __init__(self):
         self.workflows: Dict[str, WorkflowState] = {}
-        self.queues: Dict[str, asyncio.Queue] = {}
         self.llm = get_llm()  # Use centralized factory - no provider switching
         
-    def get_queue(self, workflow_id: str) -> asyncio.Queue:
-        """Get or create event queue for a workflow"""
-        if workflow_id not in self.queues:
-            self.queues[workflow_id] = asyncio.Queue()
-        return self.queues[workflow_id]
-
     async def emit_event(self, workflow_id: str, state: WorkflowState):
         """Emit workflow state event to the queue"""
-        queue = self.get_queue(workflow_id)
+        from utils.event_bus import emit_event
+        
         event = {
             "status": state.status,
             "current_stage": state.current_stage,
@@ -44,7 +38,7 @@ class WorkflowOrchestrator:
             ],
             "error": state.error
         }
-        await queue.put(event)
+        await emit_event(workflow_id, event)
         
 
     

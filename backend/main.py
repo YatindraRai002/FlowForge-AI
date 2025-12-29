@@ -155,8 +155,11 @@ async def get_workflow_status(workflow_id: str):
 @app.get("/api/workflow/stream/{workflow_id}")
 async def stream_workflow_status(workflow_id: str):
     """Server-Sent Events stream for real-time workflow updates"""
+    from utils.event_bus import get_queue
+    
     async def event_generator() -> AsyncIterator[str]:
-        queue = orchestrator.get_queue(workflow_id)
+        queue = get_queue(workflow_id)
+        print(f"[SSE] Connection opened for workflow: {workflow_id}")
         
         # Send initial status if it exists
         state = orchestrator.get_workflow_status(workflow_id)
@@ -177,16 +180,24 @@ async def stream_workflow_status(workflow_id: str):
                 ],
                 "error": state.error
             }
+            print(f"[SSE] Sending initial status for {workflow_id}")
             yield f"data: {json.dumps(initial_status)}\n\n"
 
         while True:
-            # Wait for next event from the queue
-            event = await queue.get()
-            
-            yield f"data: {json.dumps(event)}\n\n"
-            
-            # Stop streaming if workflow reached a terminal state
-            if event["status"] in ["completed", "error"]:
+            try:
+                # Wait for next event from the queue
+                event = await queue.get()
+                print(f"[SSE] Sending event for {workflow_id}: {event.get('current_stage')}")
+                
+                yield f"data: {json.dumps(event)}\n\n"
+                
+                # Stop streaming if workflow reached a terminal state
+                if event["status"] in ["completed", "error"]:
+                    print(f"[SSE] Terminal state reached for {workflow_id}, closing stream")
+                    break
+            except Exception as e:
+                print(f"[SSE] Error in event generator for {workflow_id}: {str(e)}")
+                yield f"data: {json.dumps({'error': str(e)})}\n\n"
                 break
     
     return StreamingResponse(
@@ -195,6 +206,7 @@ async def stream_workflow_status(workflow_id: str):
         headers={
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # Prevent buffering on Render/NGINX
         }
     )
 
