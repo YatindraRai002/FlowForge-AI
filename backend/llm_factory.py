@@ -4,6 +4,7 @@ Production-safe, cloud-ready, no fallback logic
 """
 import os
 from langchain_groq import ChatGroq
+from llm_adapter import MetaGPTGroqAdapter
 
 # Architecture decision: GROQ is the ONLY provider
 PROVIDER = "groq"
@@ -11,15 +12,15 @@ MODEL = "llama3-70b-8192"
 TEMPERATURE = 0.2
 MAX_TOKENS = 2048
 
-def get_llm() -> ChatGroq:
+def get_llm() -> MetaGPTGroqAdapter:
     """
-    Get configured Groq LLM instance.
+    Get configured Groq LLM instance wrapped in MetaGPT adapter.
     
     This is the ONLY way to create LLM instances in this application.
     No fallback, no provider switching, cloud-safe.
     
     Returns:
-        ChatGroq: Configured Groq LLM instance
+        MetaGPTGroqAdapter: Configured Groq LLM instance
         
     Raises:
         RuntimeError: If GROQ_API_KEY is not set
@@ -41,4 +42,4 @@ def get_llm() -> ChatGroq:
     )
 
     print(f"[LLM] Provider: {PROVIDER} | Model: {MODEL}", flush=True)
-    return llm
+    return MetaGPTGroqAdapter(llm)

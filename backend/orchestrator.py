@@ -138,6 +138,8 @@ class WorkflowOrchestrator:
             # Handle errors
             error_msg = str(e)
             print(f"❌ Workflow {workflow_id} failed: {error_msg}")
+            import traceback
+            traceback.print_exc()
             
             state.status = "error"
             state.current_stage = "error"
@@ -151,6 +153,9 @@ class WorkflowOrchestrator:
                     last_activity.status = "error"
                     last_activity.current_task = f"Error: {error_msg}"
                     last_activity.completed_at = datetime.now()
+            
+            # Re-raise the exception as requested
+            raise
     
     def get_workflow_status(self, workflow_id: str) -> Optional[WorkflowState]:
         """Get workflow status"""
