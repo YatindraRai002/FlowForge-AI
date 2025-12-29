@@ -33,6 +33,14 @@ class AppConfig(BaseModel):
     llm: LLMConfig
     server: ServerConfig
     
+    # CORS Configuration
+    cors_origins: list[str] = [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "https://flowforge-ai.onrender.com",
+    ]
+    
     # Workflow settings
     max_concurrent_workflows: int = 5
     workflow_timeout: int = 600  # 10 minutes
