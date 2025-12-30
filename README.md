@@ -9,7 +9,7 @@
 ![Python](https://img.shields.io/badge/python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![React](https://img.shields.io/badge/react-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-LLM-FF6B35?style=for-the-badge&logo=ai&logoColor=white)
 
 ### **Transform ideas into complete marketing campaigns in 30 seconds**
 ### **Powered by 5 specialized AI agents working in perfect harmony**
@@ -114,7 +114,7 @@ graph LR
 
 - RESTful API with OpenAPI
 - WebSocket support
-- Gemini AI integration
+- Groq LLM integration
 - Cross-platform compatible
 - Easy cloud deployment
 
@@ -160,8 +160,8 @@ graph TB
     end
     
     subgraph "AI Layer"
-        H[Gemini AI API]
-        H1[gemini-1.5-flash]
+        H[Groq LLM API]
+        H1[llama-3.1-8b-instant]
         H2[Retry Logic<br/>1s→2s→4s]
         H --> H1
         H --> H2
@@ -209,7 +209,7 @@ sequenceDiagram
     participant B as ⚙️ Backend
     participant C as 💾 Cache
     participant A as 🤖 Agents
-    participant G as 🧠 Gemini AI
+    participant G as 🧠 Groq LLM
     
     U->>F: Submit Campaign Request
     F->>B: POST /api/workflow/start
@@ -466,8 +466,8 @@ stateDiagram-v2
 │                 ┌──────────────────┴───────┐           │
 │                 │                          │           │
 │          ┌──────▼──────┐          ┌────────▼───────┐  │
-│          │   Cache     │          │   Gemini AI    │  │
-│          │  (LRU+TTL)  │          │ gemini-1.5-flash│ │
+│          │   Cache     │          │   Groq LLM     │  │
+│          │  (LRU+TTL)  │          │llama-3.1-8b-instant│ │
 │          └─────────────┘          └────────────────┘  │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -526,7 +526,7 @@ User Request
 <td width="50%">
 
 **API Keys (Free)**
-- [Gemini API Key](https://makersuite.google.com/app/apikey)
+- [Groq API Key](https://console.groq.com/)
 - GitHub account (for deployment)
 
 </td>
@@ -555,9 +555,8 @@ copy .env.example .env          # Windows
 # cp .env.example .env          # macOS/Linux
 
 # Edit backend/.env and add your API key:
-# GEMINI_API_KEY=your_actual_api_key_here
-# LLM_PROVIDER=gemini
-# LLM_MODEL=gemini-1.5-flash
+# GROQ_API_KEY=your_actual_groq_api_key_here
+# GROQ_MODEL=llama-3.1-8b-instant
 
 # 4️⃣ Frontend setup
 cd ..
@@ -571,7 +570,7 @@ START_FLOWFORGE.bat             # Windows (Easy - Auto setup!)
 # Terminal 2: npm run dev
 ```
 
-> **⚠️ IMPORTANT:** After cloning, you MUST create `backend/.env` from `backend/.env.example` and add your Gemini API key. See [SETUP.md](./SETUP.md) for detailed instructions.
+> **⚠️ IMPORTANT:** After cloning, you MUST create `backend/.env` from `backend/.env.example` and add your Groq API key. See [SETUP.md](./SETUP.md) for detailed instructions.
 
 ### 🌐 Access Your Application
 
@@ -606,7 +605,7 @@ graph TB
         end
         
         subgraph "External Services"
-            E1[Gemini AI API]
+            E1[Groq LLM API]
             E2[GitHub Repository]
         end
     end
@@ -642,8 +641,8 @@ graph TB
 
 5. **Add Environment Variables**:
    ```env
-   LLM_PROVIDER=gemini
-   GEMINI_API_KEY=your_gemini_api_key_here
+   GROQ_API_KEY=your_groq_api_key_here
+   GROQ_MODEL=llama-3.1-8b-instant
    PYTHON_VERSION=3.11.0
    ```
 
@@ -679,7 +678,7 @@ graph TB
 
 - [ ] Backend health check: `https://your-backend.onrender.com/health`
   ```json
-  {"status": "healthy", "provider": "gemini"}
+  {"status": "healthy", "provider": "groq", "model": "llama-3.1-8b-instant"}
   ```
 - [ ] Frontend loads: `https://your-frontend.onrender.com`
 - [ ] Create test campaign works
