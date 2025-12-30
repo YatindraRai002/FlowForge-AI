@@ -40,10 +40,32 @@ class StartWorkflowResponse(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     """Application startup"""
+    # Validate Groq model
+    SUPPORTED_MODELS = [
+        "llama-3.1-8b-instant",
+        "llama-3.1-70b-versatile", 
+        "mixtral-8x7b-32768",
+        "gemma2-9b-it",
+        "llama-3.3-70b-versatile"
+    ]
+    
+    if MODEL not in SUPPORTED_MODELS:
+        print("="*60)
+        print("❌ ERROR: Unsupported Groq Model Detected")
+        print("="*60)
+        print(f"Current model: {MODEL}")
+        print(f"\nThis model may be deprecated or invalid.")
+        print(f"\nSupported models:")
+        for model in SUPPORTED_MODELS:
+            print(f"  ✅ {model}")
+        print(f"\nUpdate GROQ_MODEL environment variable to a supported model.")
+        print("="*60)
+        raise RuntimeError(f"Unsupported Groq model: {MODEL}")
+    
     print("="*43)
     print("FlowForge AI - MetaGPT Architecture")
     print("="*43)
-    print(f"[LLM] Provider: groq | Model: {MODEL}")
+    print(f"[LLM] Provider: groq | Model: {MODEL} ✅")
     print(f"Server: http://{config.server.host}:{config.server.port}")
     print(f"CORS: {', '.join(config.cors_origins)}")
     print("="*43)

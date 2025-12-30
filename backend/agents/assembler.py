@@ -1,4 +1,4 @@
-from utils.gemini_client import gemini_client
+from utils.groq_client import groq_client
 from models.workflow import Plan, ImprovedDraft, FinalOutput
 
 class AssemblerAgent:
@@ -60,7 +60,7 @@ Format as:
 
 Return ONLY the formatted Markdown document. No JSON, no extra text."""
 
-        response = gemini_client.generate_content(prompt)
+        response = groq_client.generate_content(prompt)
         
         # Parse the response
         final_text = response.strip()

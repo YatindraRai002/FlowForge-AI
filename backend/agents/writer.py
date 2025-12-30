@@ -1,4 +1,4 @@
-from utils.gemini_client import gemini_client
+from utils.groq_client import groq_client
 from models.workflow import Plan, Research, Draft
 import json
 import datetime
@@ -57,7 +57,7 @@ Write for ALL sections: {', '.join([s.id for s in plan.sections])}
 
 Return ONLY the JSON object. No markdown, no extra text."""
 
-        response = gemini_client.generate_content(prompt)
+        response = groq_client.generate_content(prompt)
         
         # Parse JSON response
         try:

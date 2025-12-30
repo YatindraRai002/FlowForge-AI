@@ -1,4 +1,4 @@
-from utils.gemini_client import gemini_client
+from utils.groq_client import groq_client
 from models.workflow import UserRequest, Plan, Section
 import json
 import datetime
@@ -43,11 +43,11 @@ You MUST respond with ONLY valid JSON in this exact format:
 
 DO NOT add any text before or after the JSON. Return ONLY the JSON object."""
 
-        response = gemini_client.generate_content(prompt)
+        response = groq_client.generate_content(prompt)
         
         # Check if response is None or empty
         if not response:
-            raise Exception("Gemini API returned empty response")
+            raise Exception("Groq API returned empty response")
         
         # Parse JSON response
         try:

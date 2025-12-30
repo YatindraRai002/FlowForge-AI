@@ -1,4 +1,4 @@
-from utils.gemini_client import gemini_client
+from utils.groq_client import groq_client
 from models.workflow import Plan, Research, ResearchNote
 import json
 import datetime
@@ -60,7 +60,7 @@ You MUST respond with ONLY valid JSON:
 
 Provide 3 key_points, 2 facts, and 2 examples for each section. Return ONLY the JSON object."""
 
-        response = gemini_client.generate_content(prompt)
+        response = groq_client.generate_content(prompt)
         
         # Parse JSON response
         try:

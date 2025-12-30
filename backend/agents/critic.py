@@ -1,4 +1,4 @@
-from utils.gemini_client import gemini_client
+from utils.groq_client import groq_client
 from models.workflow import Plan, Draft, Feedback, SectionFeedback, ImprovedDraft
 import json
 
@@ -56,7 +56,7 @@ Improve ALL sections: {', '.join([s.id for s in plan.sections])}
 
 Return ONLY the JSON object."""
 
-        response = gemini_client.generate_content(prompt)
+        response = groq_client.generate_content(prompt)
         
         # Parse JSON response
         try:

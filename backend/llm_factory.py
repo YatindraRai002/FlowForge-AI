@@ -7,9 +7,9 @@ from langchain_groq import ChatGroq
 from llm_adapter import MetaGPTGroqAdapter
 
 # Architecture decision: GROQ is the ONLY provider
-# Default model updated as llama3-70b-8192 was decommissioned
+# Default model updated to llama-3.1-8b-instant (llama3-8b-8192 was decommissioned)
 PROVIDER = "groq"
-MODEL = os.getenv("GROQ_MODEL", "llama3-8b-8192")
+MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 TEMPERATURE = 0.2
 MAX_TOKENS = 2048
 
