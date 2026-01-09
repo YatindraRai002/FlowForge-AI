@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Zap, Users, Sparkles, Brain, Workflow, Target } from 'lucide-react'
 import Button from '../components/Button'
 import Card from '../components/Card'
+import Snowfall from '../components/Snowfall'
 
 const LandingPage = () => {
   const features = [
@@ -35,6 +36,9 @@ const LandingPage = () => {
 
   return (
     <div id="landing-page" className="relative overflow-hidden w-full min-h-screen">
+      {/* Snowfall Effect */}
+      <Snowfall snowflakeCount={50} />
+      
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-neon-blue/20 rounded-full blur-3xl animate-pulse-slow" />

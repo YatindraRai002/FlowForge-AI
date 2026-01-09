@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { History } from 'lucide-react'
 import Button from './Button'
 import AnimatedLogo from './AnimatedLogo'
 
@@ -65,6 +66,16 @@ const Navbar = () => {
                   }`}
               >
                 Pricing
+              </Link>
+              <Link
+                to="/history"
+                className={`text-sm font-medium transition-colors flex items-center gap-1 ${isActive('/history')
+                    ? 'text-neon-blue'
+                    : 'text-gray-400 hover:text-white'
+                  }`}
+              >
+                <History className="w-4 h-4" />
+                History
               </Link>
             </div>
 

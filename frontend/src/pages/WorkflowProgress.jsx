@@ -5,10 +5,12 @@ import { ArrowRight, CheckCircle, Play, Sparkles, Search, PenTool, Palette, Brie
 import Button from '../components/Button'
 import AgentStatus from '../components/AgentStatus'
 import { workflowAPI } from '../services/api'
+import useCampaignHistoryStore from '../store/campaignHistory'
 
 const WorkflowProgress = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { campaigns, updateCampaign } = useCampaignHistoryStore()
   
   // Agent data defined inline - no dummy data needed
   const agentDefinitions = {
@@ -117,6 +119,15 @@ const WorkflowProgress = () => {
           if (status.current_stage === 'completed') {
             eventSource.close();
             setAllComplete(true);
+            // Update campaign history
+            const matchingCampaign = campaigns.find(c => 
+              c.product === campaignData.product && 
+              c.audience === campaignData.audience &&
+              c.status === 'in-progress'
+            );
+            if (matchingCampaign) {
+              updateCampaign(matchingCampaign.id, { status: 'completed' });
+            }
             // Fetch the final result
             workflowAPI.getWorkflowResult(workflowId)
               .then(result => {
@@ -160,6 +171,15 @@ const WorkflowProgress = () => {
           if (status.current_stage === 'completed') {
             clearInterval(fallbackInterval);
             setAllComplete(true);
+            // Update campaign history
+            const matchingCampaign = campaigns.find(c => 
+              c.product === campaignData.product && 
+              c.audience === campaignData.audience &&
+              c.status === 'in-progress'
+            );
+            if (matchingCampaign) {
+              updateCampaign(matchingCampaign.id, { status: 'completed' });
+            }
             const result = await workflowAPI.getWorkflowResult(workflowId);
             setFinalResult(result.result);
             localStorage.setItem('lastWorkflowResult', JSON.stringify(result.result));

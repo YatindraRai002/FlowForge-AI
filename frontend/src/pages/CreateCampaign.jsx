@@ -1,17 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { Package, Users, Radio, Sparkles } from 'lucide-react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { Package, Users, Radio, Sparkles, History } from 'lucide-react'
 import Button from '../components/Button'
 import Card from '../components/Card'
+import HistorySidebar from '../components/HistorySidebar'
+import useCampaignHistoryStore from '../store/campaignHistory'
 
 const CreateCampaign = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { addCampaign } = useCampaignHistoryStore()
+  const [showHistory, setShowHistory] = useState(false)
   const [formData, setFormData] = useState({
     product: '',
     audience: '',
     channels: []
   })
+
+  // Load campaign data from history if provided
+  useEffect(() => {
+    if (location.state) {
+      setFormData({
+        product: location.state.product || '',
+        audience: location.state.audience || '',
+        channels: location.state.channels || []
+      })
+    }
+  }, [location.state])
 
   const channelOptions = [
     'LinkedIn',
@@ -24,6 +40,11 @@ const CreateCampaign = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    // Save to history
+    addCampaign({
+      ...formData,
+      status: 'in-progress'
+    })
     // Navigate to workflow page with form data
     navigate('/workflow', { state: formData })
   }
@@ -46,6 +67,17 @@ const CreateCampaign = () => {
       </div>
 
       <div className="relative responsive-container section-padding">
+        {/* History Button */}
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={() => setShowHistory(true)}
+          className="fixed left-4 top-24 z-30 p-3 glass rounded-xl border border-neon-blue/30 hover:border-neon-blue hover:shadow-neon-blue transition-all group"
+          title="View History"
+        >
+          <History className="w-5 h-5 text-neon-blue group-hover:scale-110 transition-transform" />
+        </motion.button>
+
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -200,6 +232,9 @@ const CreateCampaign = () => {
           ))}
         </motion.div>
       </div>
+
+      {/* History Sidebar */}
+      <HistorySidebar isOpen={showHistory} onClose={() => setShowHistory(false)} />
     </div>
   )
 }

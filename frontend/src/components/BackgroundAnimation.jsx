@@ -116,18 +116,6 @@ const BackgroundAnimation = () => {
         />
       ))}
 
-      {/* Grid pattern overlay */}
-      <div 
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `
-            linear-gradient(#00E5FF 1px, transparent 1px),
-            linear-gradient(90deg, #00E5FF 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px',
-        }}
-      />
-
       {/* Animated gradient lines */}
       <motion.div
         className="absolute top-0 left-0 w-full h-1"

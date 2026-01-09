@@ -19,6 +19,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import Product from './pages/Product'
 import Company from './pages/Company'
 import LandingPage from './pages/LandingPage'
+import History from './pages/History'
 import React from 'react'
 
 // Simple components for missing pages
@@ -95,6 +96,7 @@ function App() {
             <Route path="/company" element={<Company />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/history" element={<History />} />
           </Routes>
         </Layout>
       </Router>
