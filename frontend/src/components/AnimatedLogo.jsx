@@ -5,15 +5,15 @@ const AnimatedLogo = ({ className = "" }) => {
   return (
     <div className={`relative ${className}`}>
       <motion.div
-        className="relative w-12 h-12"
-        whileHover={{ scale: 1.05 }}
+        className="relative w-10 h-10"
+        whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.3 }}
       >
         {/* FlowForge Logo */}
         <img
           src={logo}
           alt="FlowForge Logo"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain rounded-lg"
         />
 
         {/* Subtle pulse effect */}
