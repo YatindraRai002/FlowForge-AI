@@ -1,304 +1,660 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Zap, Users, Sparkles, Brain, Workflow, Target } from 'lucide-react'
-import Button from '../components/Button'
-import Card from '../components/Card'
-import Snowfall from '../components/Snowfall'
+import { useState, useEffect } from 'react'
+import { 
+  ArrowRight, 
+  Lightbulb, 
+  Search, 
+  PenTool, 
+  Eye, 
+  Layers,
+  Brain,
+  Zap,
+  Shield,
+  GitBranch,
+  Server,
+  Sparkles
+} from 'lucide-react'
+import AgentCard3D from '../components/AgentCard3D'
+import MouseFollower from '../components/MouseFollower'
 
 const LandingPage = () => {
-  const features = [
+  const [activePhase, setActivePhase] = useState(0)
+  
+  // Auto-rotate phases
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActivePhase((prev) => (prev + 1) % 5)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [])
+
+  const agents = [
     {
-      icon: Brain,
-      title: "AI-Powered Planning",
-      description: "Our planner agent understands your requests and creates execution plans."
+      id: 'AGENT_01',
+      name: 'PLANNER',
+      icon: Lightbulb,
+      color: '#00e5ff',
+      colorName: 'cyan',
+      description: 'Creates strategic marketing plans using proven frameworks. Breaks down your content goals into structured sections with clear objectives and audience targeting.'
     },
     {
-      icon: Sparkles,
-      title: "Intelligent Research",
-      description: "Gathers relevant information based on the plan from multiple sources."
+      id: 'AGENT_02',
+      name: 'RESEARCHER',
+      icon: Search,
+      color: '#c147ff',
+      colorName: 'purple',
+      description: 'Gathers real-time market insights and trends. Analyzes competitor data, audience behavior, and industry benchmarks to fuel your content with relevant facts.'
     },
     {
-      icon: Target,
-      title: "Creative Writing",
-      description: "Produces initial drafts using collected information and brand guidelines."
+      id: 'AGENT_03',
+      name: 'WRITER',
+      icon: PenTool,
+      color: '#ff3ba8',
+      colorName: 'pink',
+      description: 'Crafts compelling, data-driven marketing content. Transforms research insights into persuasive narratives that resonate with your target audience.'
     },
     {
-      icon: Workflow,
-      title: "Quality Review",
-      description: "Evaluates draft quality, scores it, and triggers rewrite cycles if needed."
+      id: 'AGENT_04',
+      name: 'REVIEWER',
+      icon: Eye,
+      color: '#00ffc8',
+      colorName: 'green',
+      description: 'Reviews and enhances draft quality. Provides actionable feedback on messaging, flow, and impact while generating improved versions of your content.'
     },
     {
-      icon: Zap,
-      title: "Final Assembly",
-      description: "Performs final polishing, formatting, and output assembly."
+      id: 'AGENT_05',
+      name: 'ASSEMBLER',
+      icon: Layers,
+      color: '#ffd700',
+      colorName: 'yellow',
+      description: 'Produces the final polished document. Combines all sections with professional formatting, smooth transitions, and a compelling executive summary.'
     }
   ]
 
+  const phases = [
+    { name: 'Planner', color: '#00e5ff' },
+    { name: 'Researcher', color: '#c147ff' },
+    { name: 'Writer', color: '#ff3ba8' },
+    { name: 'Reviewer', color: '#00ffc8' },
+    { name: 'Assembler', color: '#ffd700' }
+  ]
+
+  const features = [
+    {
+      icon: Brain,
+      title: 'Neural Intelligence',
+      description: 'Advanced AI models trained on vast datasets for superior decision-making'
+    },
+    {
+      icon: Zap,
+      title: 'Lightning Performance',
+      description: 'Optimized architecture delivering results in milliseconds, not minutes'
+    },
+    {
+      icon: Shield,
+      title: 'Enterprise Security',
+      description: 'Bank-grade encryption and compliance with industry standards'
+    },
+    {
+      icon: GitBranch,
+      title: 'Seamless Integration',
+      description: 'Plug-and-play compatibility with your existing tech stack'
+    },
+    {
+      icon: Server,
+      title: 'Scalable Architecture',
+      description: 'Handle millions of requests without breaking a sweat'
+    },
+    {
+      icon: Sparkles,
+      title: 'Continuous Learning',
+      description: 'Self-improving agents that get smarter with every interaction'
+    }
+  ]
+
+  const stats = [
+    { value: '10x faster', label: 'Processing Speed' },
+    { value: '99.9%', label: 'Accuracy Rate' },
+    { value: '100+', label: 'Parallel Tasks' },
+    { value: '<1s', label: 'Response Time' }
+  ]
+
   return (
-    <div id="landing-page" className="relative overflow-hidden w-full min-h-screen">
-      {/* Snowfall Effect */}
-      <Snowfall snowflakeCount={50} />
+    <div className="relative overflow-hidden w-full min-h-screen">
+      {/* Custom Mouse Follower */}
+      <MouseFollower />
       
-      {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-neon-blue/20 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-neon-purple/20 rounded-full blur-3xl animate-pulse-slow" />
-      </div>
-
       {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 sm:pt-20 sm:pb-32">
+      <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
+        {/* Animated Hexagon Logo */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center"
+          className="absolute left-[5%] top-[15%] hidden lg:block"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
         >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring" }}
-            className="inline-flex items-center gap-2 px-4 py-2 glass rounded-full mb-8"
-          >
-            <Zap className="w-4 h-4 text-neon-blue" />
-            <span className="text-sm font-medium text-gray-300">Next-Gen AI Workflow Automation</span>
-          </motion.div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-            <span className="text-white">Automate Your</span>
-            <br />
-            <span className="text-gradient glow-text">Marketing Workflow</span>
-          </h1>
-
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto">
-            Transform product ideas into complete marketing briefs with our intelligent multi-agent AI system. 
-            <span className="text-neon-blue font-semibold"> No manual work required.</span>
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/create">
-              <Button size="lg">
-                Get Started
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
-            <Link to="/workflow">
-              <Button variant="secondary" size="lg">
-                <Users className="w-5 h-5" />
-                See Agents in Action
-              </Button>
-            </Link>
+          <div className="relative">
+            {/* Decorative circles */}
+            <motion.div
+              className="absolute -left-16 -top-8 w-40 h-40 rounded-full border border-purple-500/30"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div
+              className="absolute -left-8 top-32 w-24 h-24 rounded-full border border-cyan-500/20"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            />
+            
+            {/* Main Hexagon */}
+            <motion.svg
+              width="200"
+              height="200"
+              viewBox="0 0 100 100"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <defs>
+                <linearGradient id="heroHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#c147ff" />
+                  <stop offset="25%" stopColor="#ff3ba8" />
+                  <stop offset="50%" stopColor="#ffa500" />
+                  <stop offset="75%" stopColor="#00ffc8" />
+                  <stop offset="100%" stopColor="#00e5ff" />
+                </linearGradient>
+                <filter id="heroGlow">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              <motion.path
+                d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z"
+                fill="none"
+                stroke="url(#heroHexGradient)"
+                strokeWidth="2"
+                filter="url(#heroGlow)"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 2, ease: 'easeInOut' }}
+              />
+              
+              <motion.path
+                d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
+                fill="none"
+                stroke="#00ffc8"
+                strokeWidth="1.5"
+                opacity="0.6"
+              />
+              
+              <motion.circle
+                cx="50"
+                cy="50"
+                r="18"
+                fill="none"
+                stroke="#00ffc8"
+                strokeWidth="2"
+                filter="url(#heroGlow)"
+              />
+              
+              <motion.circle
+                cx="50"
+                cy="50"
+                r="8"
+                fill="#00ffc8"
+                animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              
+              {/* Connection lines */}
+              <line x1="50" y1="32" x2="50" y2="15" stroke="#00e5ff" strokeWidth="2" />
+              <line x1="68" y1="50" x2="80" y2="50" stroke="#ff3ba8" strokeWidth="2" />
+              <line x1="50" y1="68" x2="50" y2="85" stroke="#c147ff" strokeWidth="2" />
+            </motion.svg>
           </div>
         </motion.div>
 
-        {/* Animated Stats */}
+        {/* Right decorative circle */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20"
+          className="absolute right-[8%] bottom-[20%] hidden lg:block"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
         >
-          {[
-            { value: "10min", label: "From Idea to Brief" },
-            { value: "5 AI", label: "Specialized Agents" },
-            { value: "100%", label: "Automated Process" }
-          ].map((stat, i) => (
-            <Card key={i} variant="glass" className="text-center">
-              <div className="text-4xl font-bold text-gradient mb-2">{stat.value}</div>
-              <div className="text-gray-400">{stat.label}</div>
-            </Card>
-          ))}
+          <div className="w-48 h-48 rounded-full border-2 border-purple-500/30" />
+          <div className="absolute inset-4 rounded-full border border-purple-500/20" />
         </motion.div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center max-w-5xl mx-auto">
+          {/* Decorative line */}
+          <motion.div
+            className="w-full h-[2px] mb-8 mx-auto max-w-2xl"
+            style={{
+              background: 'linear-gradient(90deg, transparent, #00e5ff, #c147ff, transparent)'
+            }}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          />
+
+          <motion.h1
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="text-white">Automate Your</span>
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent italic">
+              Marketing Workflow
+            </span>
+          </motion.h1>
+
+          {/* Agent Types */}
+          <motion.div
+            className="flex flex-wrap justify-center gap-4 sm:gap-8 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            {agents.map((agent, i) => (
+              <motion.span
+                key={agent.name}
+                className="text-sm sm:text-base font-mono tracking-wider cursor-pointer transition-all duration-300"
+                style={{ color: activePhase === i ? agent.color : '#6b7280' }}
+                whileHover={{ scale: 1.1, color: agent.color }}
+                animate={{
+                  textShadow: activePhase === i ? `0 0 20px ${agent.color}` : 'none'
+                }}
+              >
+                {agent.name}
+              </motion.span>
+            ))}
+          </motion.div>
+
+          <motion.p
+            className="text-lg sm:text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            Transform product ideas into complete marketing briefs with our 
+            intelligent multi-agent AI system. <span className="text-pink-400 font-semibold">No manual work required.</span>
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+          >
+            <Link to="/create">
+              <motion.button
+                className="px-8 py-4 rounded-xl font-semibold text-white flex items-center gap-2 transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, #00e5ff, #00ffc8)',
+                  boxShadow: '0 0 30px rgba(0, 229, 255, 0.3)'
+                }}
+                whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(0, 229, 255, 0.5)' }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Launch Agents
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </Link>
+          </motion.div>
+        </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative max-w-7xl mx-auto px-6 py-20">
+      {/* Agent Matrix Section */}
+      <section className="relative max-w-7xl mx-auto px-6 py-24">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Powered by <span className="text-gradient">AI Agents</span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+              AGENT MATRIX
+            </span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Each agent specializes in a different aspect of marketing, working together seamlessly
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
+            Five autonomous AI systems, each mastering a critical domain, collaborating 
+            seamlessly to achieve extraordinary outcomes.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-          {features.map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-            >
-              <Card variant="glass" className="h-full hover:border-neon-blue border-2 border-transparent transition-all duration-300">
-                <div className="bg-gradient-to-r from-neon-blue to-neon-purple p-3 rounded-xl w-fit mb-4">
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </Card>
-            </motion.div>
+        {/* Agent Cards - First Row (3 cards) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          {agents.slice(0, 3).map((agent, i) => (
+            <AgentCard3D key={agent.id} agent={agent} index={i} />
+          ))}
+        </div>
+
+        {/* Agent Cards - Second Row (2 cards centered) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {agents.slice(3, 5).map((agent, i) => (
+            <AgentCard3D key={agent.id} agent={agent} index={i + 3} />
           ))}
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="relative max-w-7xl mx-auto px-6 py-20">
+      {/* Seamless Workflow Section */}
+      <section className="relative max-w-7xl mx-auto px-6 py-24">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Simple <span className="text-gradient">3-Step</span> Process
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent">
+              SEAMLESS WORKFLOW
+            </span>
           </h2>
+          <p className="text-lg text-gray-400">
+            Watch how our agents collaborate in perfect synchronization
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              step: "01",
-              title: "Enter Product Details",
-              description: "Share your product, target audience, and marketing channels"
-            },
-            {
-              step: "02",
-              title: "AI Agents Collaborate",
-              description: "Watch our 5 specialized agents plan, research, write, critique, and assemble in real-time"
-            },
-            {
-              step: "03",
-              title: "Get Your Brief",
-              description: "Download a complete, production-ready marketing brief"
-            }
-          ].map((item, i) => (
+        {/* Workflow Timeline */}
+        <div className="relative mb-16">
+          {/* Connection Line */}
+          <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-800 transform -translate-y-1/2 hidden md:block">
             <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2 }}
-              className="relative"
-            >
-              <Card variant="glass" className="relative z-10 pt-8">
-                <div className="text-6xl font-bold text-neon-blue/20 absolute top-2 right-4">
-                  {item.step}
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3 relative z-20">{item.title}</h3>
-                <p className="text-gray-400 relative z-20">{item.description}</p>
-              </Card>
-            </motion.div>
-          ))}
+              className="h-full"
+              style={{
+                background: `linear-gradient(90deg, ${phases[activePhase].color}, ${phases[(activePhase + 1) % 5].color})`,
+              }}
+              initial={{ width: '0%' }}
+              animate={{ width: `${(activePhase + 1) * 20}%` }}
+              transition={{ duration: 0.5 }}
+            />
+          </div>
+
+          {/* Phase Circles */}
+          <div className="flex flex-wrap justify-between items-center relative z-10 gap-y-8">
+            {phases.map((phase, i) => (
+              <motion.div
+                key={phase.name}
+                className="flex flex-col items-center cursor-pointer"
+                onClick={() => setActivePhase(i)}
+                whileHover={{ scale: 1.1 }}
+              >
+                <motion.div
+                  className="relative mb-4"
+                  animate={{
+                    scale: activePhase === i ? 1.2 : 1,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Outer ring */}
+                  <motion.div
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center"
+                    style={{
+                      background: activePhase >= i 
+                        ? `linear-gradient(135deg, ${phase.color}40, ${phase.color}20)`
+                        : 'rgba(30, 30, 40, 0.8)',
+                      border: `2px solid ${activePhase >= i ? phase.color : '#374151'}`,
+                      boxShadow: activePhase === i ? `0 0 30px ${phase.color}50` : 'none'
+                    }}
+                    animate={{
+                      boxShadow: activePhase === i 
+                        ? [`0 0 20px ${phase.color}30`, `0 0 40px ${phase.color}50`, `0 0 20px ${phase.color}30`]
+                        : 'none'
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <span 
+                      className="text-2xl font-bold"
+                      style={{ color: activePhase >= i ? phase.color : '#6b7280' }}
+                    >
+                      {i + 1}
+                    </span>
+                  </motion.div>
+                  
+                  {/* Floating dot */}
+                  {activePhase === i && (
+                    <motion.div
+                      className="absolute -top-1 -right-1 w-4 h-4 rounded-full"
+                      style={{ background: phase.color }}
+                      animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
+                  )}
+                </motion.div>
+
+                <motion.p
+                  className="text-sm sm:text-base font-semibold"
+                  style={{ color: activePhase === i ? phase.color : '#6b7280' }}
+                >
+                  {phase.name}
+                </motion.p>
+                <p className="text-xs text-gray-500 font-mono">PHASE {i + 1}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </section>
 
-      {/* Pricing Preview Section */}
-      <section className="relative max-w-7xl mx-auto px-6 py-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Plans That <span className="text-gradient">Scale With You</span>
-          </h2>
-          <p className="text-xl text-gray-400">Start free, upgrade as you grow</p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { name: "Starter", price: "2,999", campaigns: "10", popular: false },
-            { name: "Professional", price: "7,999", campaigns: "50", popular: true },
-            { name: "Enterprise", price: "Custom", campaigns: "∞", popular: false }
-          ].map((plan, i) => (
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {stats.map((stat, i) => (
             <motion.div
-              key={i}
+              key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
+              className="p-6 rounded-xl border border-gray-800 bg-gray-900/50 text-center hover:border-cyan-500/50 transition-all duration-300"
             >
-              <Card 
-                variant="glass" 
-                className={`text-center relative ${
-                  plan.popular ? 'border-2 border-neon-purple shadow-neon-purple' : ''
-                }`}
+              <motion.div
+                className="text-2xl sm:text-3xl font-bold text-white mb-2"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
               >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-neon-purple to-neon-pink px-3 py-1 rounded-full text-xs font-semibold text-white">
-                      Popular
-                    </span>
-                  </div>
-                )}
-                <h3 className="text-xl font-bold text-white mb-4 mt-2">{plan.name}</h3>
-                <div className="mb-4">
-                  {plan.price === "Custom" ? (
-                    <div className="text-3xl font-bold text-gradient">Custom</div>
-                  ) : (
-                    <div>
-                      <span className="text-4xl font-bold text-gradient">₹{plan.price}</span>
-                      <span className="text-gray-400">/month</span>
-                    </div>
-                  )}
-                </div>
-                <div className="text-gray-400 mb-6">
-                  <span className="text-2xl font-bold text-neon-blue">{plan.campaigns}</span> campaigns/month
-                </div>
-              </Card>
+                {stat.value}
+              </motion.div>
+              <p className="text-xs sm:text-sm text-gray-500 font-mono uppercase">{stat.label}</p>
             </motion.div>
           ))}
         </div>
-        
+      </section>
+
+      {/* Powered by Innovation Section */}
+      <section className="relative max-w-7xl mx-auto px-6 py-24 overflow-hidden">
+        {/* Animated background lights */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Central glow */}
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full"
+            style={{
+              background: 'radial-gradient(ellipse, rgba(236, 72, 153, 0.15) 0%, rgba(6, 182, 212, 0.1) 40%, transparent 70%)',
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          
+          {/* Floating light orbs */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-32 h-32 rounded-full"
+              style={{
+                background: i % 2 === 0 
+                  ? 'radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent 70%)' 
+                  : 'radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent 70%)',
+                left: `${10 + i * 15}%`,
+                top: `${20 + (i % 3) * 25}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                x: [0, i % 2 === 0 ? 20 : -20, 0],
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 3 + i * 0.5,
+                repeat: Infinity,
+                delay: i * 0.4,
+                ease: 'easeInOut',
+              }}
+            />
+          ))}
+
+          {/* Sparkle particles */}
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={`sparkle-${i}`}
+              className="absolute w-1 h-1 bg-white rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                boxShadow: '0 0 6px 2px rgba(255, 255, 255, 0.5)',
+              }}
+              animate={{
+                opacity: [0, 1, 0],
+                scale: [0, 1.5, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.3,
+              }}
+            />
+          ))}
+        </div>
+
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mt-8"
+          className="text-center mb-16 relative z-10"
         >
-          <Link to="/pricing">
-            <Button variant="secondary" size="lg">
-              View All Plans & Features
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          </Link>
+          {/* Animated title with glow */}
+          <motion.h2 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 italic"
+            animate={{
+              textShadow: [
+                '0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(6, 182, 212, 0.3)',
+                '0 0 40px rgba(236, 72, 153, 0.7), 0 0 80px rgba(6, 182, 212, 0.5)',
+                '0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(6, 182, 212, 0.3)',
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              POWERED BY INNOVATION
+            </span>
+          </motion.h2>
+          
+          {/* Animated underline */}
+          <motion.div
+            className="mx-auto h-1 rounded-full mb-6"
+            style={{
+              background: 'linear-gradient(90deg, transparent, #ec4899, #06b6d4, transparent)',
+            }}
+            initial={{ width: 0 }}
+            whileInView={{ width: '300px' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          />
+          
+          <motion.p 
+            className="text-lg text-gray-300"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            Cutting-edge technology meets intuitive design to deliver unparalleled performance
+          </motion.p>
         </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, i) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -5, borderColor: '#00e5ff50' }}
+              className="p-6 rounded-xl border border-gray-800 bg-gray-900/30 transition-all duration-300 group"
+            >
+              <div className="p-3 rounded-xl bg-gray-800/50 border border-gray-700 w-fit mb-4 group-hover:border-cyan-500/50 transition-colors">
+                <feature.icon className="w-6 h-6 text-gray-400 group-hover:text-cyan-400 transition-colors" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
+              <p className="text-gray-400 text-sm">{feature.description}</p>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {/* CTA Section */}
-      <section className="relative max-w-7xl mx-auto px-6 py-20">
-        <Card variant="glass" className="text-center relative overflow-hidden">
-          <div className="absolute inset-0 animated-gradient opacity-10" />
-          <div className="relative z-10 py-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+      <section className="relative max-w-5xl mx-auto px-6 py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative rounded-3xl p-12 text-center overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(20, 20, 35, 0.95), rgba(10, 10, 20, 0.98))',
+            border: '1px solid rgba(0, 229, 255, 0.2)'
+          }}
+        >
+          {/* Background glow */}
+          <div 
+            className="absolute inset-0 opacity-30"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.1), transparent 70%)'
+            }}
+          />
+          
+          <div className="relative z-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to Transform Your Workflow?
             </h2>
-            <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-              Join thousands of marketers who've automated their way to success
+            <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">
+              Join thousands of teams who've revolutionized their processes with our AI agent ecosystem
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/create">
-                <Button size="lg">
-                  Start Free Trial
+                <motion.button
+                  className="px-8 py-4 rounded-xl font-semibold text-white flex items-center gap-2"
+                  style={{
+                    background: 'linear-gradient(135deg, #00e5ff, #c147ff)',
+                    boxShadow: '0 0 30px rgba(0, 229, 255, 0.3)'
+                  }}
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(0, 229, 255, 0.5)' }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Get Started Free
                   <ArrowRight className="w-5 h-5" />
-                </Button>
+                </motion.button>
               </Link>
-              <Link to="/pricing">
-                <Button variant="secondary" size="lg">
-                  View Pricing
-                </Button>
+              <Link to="/docs">
+                <motion.button
+                  className="px-8 py-4 rounded-xl font-semibold text-gray-300 border border-gray-700 hover:border-gray-500 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Learn More
+                </motion.button>
               </Link>
             </div>
           </div>
-        </Card>
+        </motion.div>
       </section>
     </div>
   )

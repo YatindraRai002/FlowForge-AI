@@ -115,38 +115,6 @@ const BackgroundAnimation = () => {
           }}
         />
       ))}
-
-      {/* Animated gradient lines */}
-      <motion.div
-        className="absolute top-0 left-0 w-full h-1"
-        style={{
-          background: 'linear-gradient(90deg, transparent, #00E5FF, transparent)',
-        }}
-        animate={{
-          x: ['-100%', '100%'],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-      />
-
-      <motion.div
-        className="absolute bottom-0 right-0 w-1 h-full"
-        style={{
-          background: 'linear-gradient(180deg, transparent, #C147FF, transparent)',
-        }}
-        animate={{
-          y: ['-100%', '100%'],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: 'linear',
-          delay: 1.5,
-        }}
-      />
     </div>
   )
 }

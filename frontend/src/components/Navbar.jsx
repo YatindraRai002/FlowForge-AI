@@ -10,7 +10,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path
 
   return (
-    <nav className="glass sticky top-0 z-50 border-b border-white/10">
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a12]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">

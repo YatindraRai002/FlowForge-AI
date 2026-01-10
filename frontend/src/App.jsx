@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
+import { AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import Layout from './components/Layout'
+import SplashScreen from './components/SplashScreen'
 import Welcome from './pages/Welcome'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -71,13 +74,37 @@ const Docs = () => (
 
 function App() {
   console.log('App component rendering...')
+  const [showSplash, setShowSplash] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    // Check if splash has been shown in this session
+    const splashShown = sessionStorage.getItem('splashShown')
+    if (splashShown) {
+      setShowSplash(false)
+      setIsLoaded(true)
+    }
+  }, [])
+
+  const handleSplashComplete = () => {
+    sessionStorage.setItem('splashShown', 'true')
+    setShowSplash(false)
+    setIsLoaded(true)
+  }
   
   return (
     <ThemeProvider>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
+      <AnimatePresence mode="wait">
+        {showSplash && (
+          <SplashScreen key="splash" onComplete={handleSplashComplete} />
+        )}
+      </AnimatePresence>
+      
+      {isLoaded && (
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -100,6 +127,7 @@ function App() {
           </Routes>
         </Layout>
       </Router>
+      )}
     </ThemeProvider>
   )
 }

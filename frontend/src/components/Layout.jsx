@@ -1,6 +1,7 @@
 import Navbar from './Navbar'
 import Footer from './Footer'
 import BackgroundAnimation from './BackgroundAnimation'
+import LiquidGlassBackground from './LiquidGlassBackground'
 import AIChatbot from './AIChatbot'
 import { useTheme } from '../context/ThemeContext'
 
@@ -9,6 +10,7 @@ const Layout = ({ children }) => {
   
   return (
     <div id="layout-container" className={`min-h-screen w-full transition-colors duration-300 ${theme === 'dark' ? 'bg-dark-900' : 'bg-gray-50'}`}>
+      <LiquidGlassBackground />
       <BackgroundAnimation />
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <Navbar />

@@ -7,8 +7,8 @@ import Card from '../components/Card'
 const Settings = () => {
   const [activeSection, setActiveSection] = useState('account')
   const [formData, setFormData] = useState({
-    name: 'Darshil Raj',
-    email: 'darshil@example.com',
+    name: '',
+    email: '',
     notifications: true,
     newsletter: true
   })
@@ -47,7 +47,8 @@ const Settings = () => {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full px-4 py-3 glass rounded-xl text-inherit placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-blue transition-all border border-white/10 hover:border-neon-blue/50"
+                    placeholder="Enter your full name (e.g., John Doe)"
+                    className="w-full px-4 py-3 glass rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-blue transition-all border border-white/10 hover:border-neon-blue/50"
                   />
                 </div>
                 
@@ -59,7 +60,8 @@ const Settings = () => {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    className="w-full px-4 py-3 glass rounded-xl text-inherit placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-blue transition-all border border-white/10 hover:border-neon-blue/50"
+                    placeholder="Enter your email (e.g., john@example.com)"
+                    className="w-full px-4 py-3 glass rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-blue transition-all border border-white/10 hover:border-neon-blue/50"
                   />
                 </div>
                 
