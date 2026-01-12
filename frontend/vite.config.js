@@ -17,7 +17,10 @@ export default defineConfig({
     assetsDir: 'assets',
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'framer-motion', 'react-router-dom'],
+          ui: ['lucide-react']
+        }
       }
     }
   }

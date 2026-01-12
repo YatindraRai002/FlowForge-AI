@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 const LiquidGlassBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
   const location = useLocation()
-  
+
   // Determine page type for different backgrounds
   const getPageType = () => {
     const path = location.pathname
@@ -17,7 +17,7 @@ const LiquidGlassBackground = () => {
     if (path === '/login' || path === '/signup') return 'auth'
     return 'default'
   }
-  
+
   const pageType = getPageType()
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const LiquidGlassBackground = () => {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       {/* Ultra-dark base gradient */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
           background: `
@@ -162,10 +162,10 @@ const LiquidGlassBackground = () => {
             <svg className="absolute inset-0 w-full h-full" style={{ opacity: 0.4 }}>
               <defs>
                 <filter id="nodeGlow1">
-                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                   <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
               </defs>
@@ -676,6 +676,10 @@ const LiquidGlassBackground = () => {
           filter: 'blur(60px)',
           transform: 'translate(-50%, -50%)',
         }}
+        initial={{
+          left: '50%',
+          top: '50%'
+        }}
         animate={{
           left: `${mousePosition.x}%`,
           top: `${mousePosition.y}%`,
@@ -694,7 +698,7 @@ const LiquidGlassBackground = () => {
       />
 
       {/* Vignette */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.6) 100%)',
@@ -702,7 +706,7 @@ const LiquidGlassBackground = () => {
       />
 
       {/* Noise texture */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,

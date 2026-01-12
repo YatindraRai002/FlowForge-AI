@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { 
-  ArrowRight, 
-  Lightbulb, 
-  Search, 
-  PenTool, 
-  Eye, 
+import {
+  ArrowRight,
+  Lightbulb,
+  Search,
+  PenTool,
+  Eye,
   Layers,
   Brain,
   Zap,
@@ -20,7 +20,7 @@ import MouseFollower from '../components/MouseFollower'
 
 const LandingPage = () => {
   const [activePhase, setActivePhase] = useState(0)
-  
+
   // Auto-rotate phases
   useEffect(() => {
     const interval = setInterval(() => {
@@ -124,7 +124,7 @@ const LandingPage = () => {
     <div className="relative overflow-hidden w-full min-h-screen">
       {/* Custom Mouse Follower */}
       <MouseFollower />
-      
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
         {/* Right decorative circle */}
@@ -151,8 +151,8 @@ const LandingPage = () => {
           />
 
           <motion.h1
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-8 tracking-tight min-h-[1.2em]"
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
@@ -191,7 +191,7 @@ const LandingPage = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
           >
-            Transform product ideas into complete marketing briefs with our 
+            Transform product ideas into complete marketing briefs with our
             intelligent multi-agent AI system. <span className="text-pink-400 font-semibold">No manual work required.</span>
           </motion.p>
 
@@ -234,7 +234,7 @@ const LandingPage = () => {
             </span>
           </h2>
           <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            Five autonomous AI systems, each mastering a critical domain, collaborating 
+            Five autonomous AI systems, each mastering a critical domain, collaborating
             seamlessly to achieve extraordinary outcomes.
           </p>
         </motion.div>
@@ -307,27 +307,27 @@ const LandingPage = () => {
                   <motion.div
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center"
                     style={{
-                      background: activePhase >= i 
+                      background: activePhase >= i
                         ? `linear-gradient(135deg, ${phase.color}40, ${phase.color}20)`
                         : 'rgba(30, 30, 40, 0.8)',
                       border: `2px solid ${activePhase >= i ? phase.color : '#374151'}`,
                       boxShadow: activePhase === i ? `0 0 30px ${phase.color}50` : 'none'
                     }}
                     animate={{
-                      boxShadow: activePhase === i 
+                      boxShadow: activePhase === i
                         ? [`0 0 20px ${phase.color}30`, `0 0 40px ${phase.color}50`, `0 0 20px ${phase.color}30`]
                         : 'none'
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    <span 
+                    <span
                       className="text-2xl font-bold"
                       style={{ color: activePhase >= i ? phase.color : '#6b7280' }}
                     >
                       {i + 1}
                     </span>
                   </motion.div>
-                  
+
                   {/* Floating dot */}
                   {activePhase === i && (
                     <motion.div
@@ -392,15 +392,15 @@ const LandingPage = () => {
             }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           />
-          
+
           {/* Floating light orbs */}
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
               className="absolute w-32 h-32 rounded-full"
               style={{
-                background: i % 2 === 0 
-                  ? 'radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent 70%)' 
+                background: i % 2 === 0
+                  ? 'radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent 70%)'
                   : 'radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent 70%)',
                 left: `${10 + i * 15}%`,
                 top: `${20 + (i % 3) * 25}%`,
@@ -450,7 +450,7 @@ const LandingPage = () => {
           className="text-center mb-16 relative z-10"
         >
           {/* Animated title with glow */}
-          <motion.h2 
+          <motion.h2
             className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 italic"
             animate={{
               textShadow: [
@@ -465,7 +465,7 @@ const LandingPage = () => {
               POWERED BY INNOVATION
             </span>
           </motion.h2>
-          
+
           {/* Animated underline */}
           <motion.div
             className="mx-auto h-1 rounded-full mb-6"
@@ -477,8 +477,8 @@ const LandingPage = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.3, duration: 0.8 }}
           />
-          
-          <motion.p 
+
+          <motion.p
             className="text-lg text-gray-300"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -523,13 +523,13 @@ const LandingPage = () => {
           }}
         >
           {/* Background glow */}
-          <div 
+          <div
             className="absolute inset-0 opacity-30"
             style={{
               background: 'radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.1), transparent 70%)'
             }}
           />
-          
+
           <div className="relative z-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to Transform Your Workflow?
