@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import { AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
 import Layout from './components/Layout'
 import SplashScreen from './components/SplashScreen'
 // Lazy load pages
