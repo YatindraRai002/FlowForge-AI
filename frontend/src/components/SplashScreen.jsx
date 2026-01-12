@@ -44,7 +44,7 @@ const SplashScreen = ({ onComplete }) => {
       className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
       style={{ background: '#030308' }}
       initial={{ opacity: 1 }}
-      exit={{ 
+      exit={{
         opacity: 0,
         scale: 1.1,
         filter: 'blur(10px)'
@@ -90,7 +90,7 @@ const SplashScreen = ({ onComplete }) => {
         }}
         transition={{ duration: 4, repeat: Infinity }}
       />
-      
+
       <motion.div
         className="absolute w-[500px] h-[500px] rounded-full"
         style={{
@@ -106,7 +106,7 @@ const SplashScreen = ({ onComplete }) => {
       />
 
       {/* Main Logo Container */}
-      <div className="relative z-10 flex flex-col items-center">
+      <div className="relative z-10 flex flex-col items-center min-w-[300px] min-h-[400px]">
         {/* Hexagonal Logo with Animation */}
         <motion.div
           className="relative"
@@ -202,7 +202,7 @@ const SplashScreen = ({ onComplete }) => {
               animate={{ scale: 1 }}
               transition={{ delay: 0.8, duration: 0.5 }}
             />
-            
+
             <motion.circle
               cx="50"
               cy="50"
@@ -211,7 +211,7 @@ const SplashScreen = ({ onComplete }) => {
               filter="url(#glow)"
               initial={{ scale: 0 }}
               animate={{ scale: [1, 1.2, 1] }}
-              transition={{ 
+              transition={{
                 delay: 1,
                 duration: 1.5,
                 repeat: Infinity,
@@ -296,13 +296,13 @@ const SplashScreen = ({ onComplete }) => {
 
         {/* Loading text */}
         <motion.p
-          className="mt-8 text-cyan-400 text-sm tracking-[0.3em] font-mono uppercase"
+          className="mt-8 text-cyan-400 text-sm tracking-[0.3em] font-mono uppercase min-h-[1.5em]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.2 }}
-          key={loadingText}
         >
           <motion.span
+            key={loadingText}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}

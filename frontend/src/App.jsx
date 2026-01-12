@@ -4,26 +4,26 @@ import { AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Layout from './components/Layout'
 import SplashScreen from './components/SplashScreen'
-import Welcome from './pages/Welcome'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Dashboard from './pages/Dashboard'
-import CreateCampaign from './pages/CreateCampaign'
-import WorkflowProgress from './pages/WorkflowProgress'
-import FinalBrief from './pages/FinalBrief'
-import Pricing from './pages/Pricing'
-import Settings from './pages/Settings'
-import Analytics from './pages/Analytics'
-import Team from './pages/Team'
-import Documentation from './pages/Documentation'
-import APIDocumentation from './pages/APIDocumentation'
-import TermsOfService from './pages/TermsOfService'
-import PrivacyPolicy from './pages/PrivacyPolicy'
-import Product from './pages/Product'
-import Company from './pages/Company'
-import LandingPage from './pages/LandingPage'
-import History from './pages/History'
-import React from 'react'
+// Lazy load pages
+const Welcome = React.lazy(() => import('./pages/Welcome'))
+const Login = React.lazy(() => import('./pages/Login'))
+const Signup = React.lazy(() => import('./pages/Signup'))
+const Dashboard = React.lazy(() => import('./pages/Dashboard'))
+const CreateCampaign = React.lazy(() => import('./pages/CreateCampaign'))
+const WorkflowProgress = React.lazy(() => import('./pages/WorkflowProgress'))
+const FinalBrief = React.lazy(() => import('./pages/FinalBrief'))
+const Pricing = React.lazy(() => import('./pages/Pricing'))
+const Settings = React.lazy(() => import('./pages/Settings'))
+const Analytics = React.lazy(() => import('./pages/Analytics'))
+const Team = React.lazy(() => import('./pages/Team'))
+const Documentation = React.lazy(() => import('./pages/Documentation'))
+const APIDocumentation = React.lazy(() => import('./pages/APIDocumentation'))
+const TermsOfService = React.lazy(() => import('./pages/TermsOfService'))
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'))
+const Product = React.lazy(() => import('./pages/Product'))
+const Company = React.lazy(() => import('./pages/Company'))
+const LandingPage = React.lazy(() => import('./pages/LandingPage'))
+const History = React.lazy(() => import('./pages/History'))
 
 // Simple components for missing pages
 const Logout = () => {
@@ -36,10 +36,10 @@ const Logout = () => {
       localStorage.removeItem('userToken');
       sessionStorage.clear();
     }, 1000);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-dark-900">
       <div className="glass rounded-2xl p-8 max-w-2xl w-full text-center">
@@ -65,11 +65,15 @@ const Logout = () => {
 };
 
 const Guide = () => (
-  <Documentation />
+  <React.Suspense fallback={<div>Loading...</div>}>
+    <Documentation />
+  </React.Suspense>
 )
 
 const Docs = () => (
-  <APIDocumentation />
+  <React.Suspense fallback={<div>Loading...</div>}>
+    <APIDocumentation />
+  </React.Suspense>
 )
 
 function App() {
@@ -91,7 +95,7 @@ function App() {
     setShowSplash(false)
     setIsLoaded(true)
   }
-  
+
   return (
     <ThemeProvider>
       <AnimatePresence mode="wait">
@@ -99,34 +103,36 @@ function App() {
           <SplashScreen key="splash" onComplete={handleSplashComplete} />
         )}
       </AnimatePresence>
-      
+
       {isLoaded && (
         <Router>
           <Layout>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-            <Route path="/welcome" element={<Welcome />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/create" element={<CreateCampaign />} />
-            <Route path="/workflow" element={<WorkflowProgress />} />
-            <Route path="/brief" element={<FinalBrief />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/guide" element={<Guide />} />
-            <Route path="/docs" element={<Docs />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/company" element={<Company />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/history" element={<History />} />
-          </Routes>
-        </Layout>
-      </Router>
+            <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center text-cyan-400">Loading...</div>}>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/create" element={<CreateCampaign />} />
+                <Route path="/workflow" element={<WorkflowProgress />} />
+                <Route path="/brief" element={<FinalBrief />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/team" element={<Team />} />
+                <Route path="/guide" element={<Guide />} />
+                <Route path="/docs" element={<Docs />} />
+                <Route path="/product" element={<Product />} />
+                <Route path="/company" element={<Company />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/history" element={<History />} />
+              </Routes>
+            </React.Suspense>
+          </Layout>
+        </Router>
       )}
     </ThemeProvider>
   )

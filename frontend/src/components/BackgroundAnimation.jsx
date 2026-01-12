@@ -2,11 +2,8 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 const BackgroundAnimation = () => {
-  const [particles, setParticles] = useState([])
-
-  useEffect(() => {
-    // Generate random particles
-    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+  const [particles] = useState(() =>
+    Array.from({ length: 20 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -14,8 +11,7 @@ const BackgroundAnimation = () => {
       duration: Math.random() * 10 + 10,
       delay: Math.random() * 5,
     }))
-    setParticles(newParticles)
-  }, [])
+  )
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
