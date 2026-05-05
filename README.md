@@ -547,13 +547,7 @@ npm install
 # Terminal 2: npm run dev
 ```
 
-<<<<<<< HEAD
-### Access Points
-=======
-> **⚠️ IMPORTANT:** After cloning, you MUST create `backend/.env` from `backend/.env.example` and add your Groq API key. See [SETUP.md](./SETUP.md) for detailed instructions.
 
-### 🌐 Access Your Application
->>>>>>> 0043940b29c6c9911d46ae0c07cdcb827b75a966
 
 | Service | URL | Description |
 |---------|-----|-------------|
@@ -563,9 +557,7 @@ npm install
 
 ---
 
-## ☁️ Deployment
 
-### Deploy to Render.com (5 minutes)
 
 <<<<<<< HEAD
 #### Backend Service
@@ -619,7 +611,7 @@ graph TB
    ```env
    GROQ_API_KEY=your_groq_api_key_here
    GROQ_MODEL=llama-3.1-8b-instant
-   PYTHON_VERSION=3.11.0
+   PYTHON_VERSION=3.14.0
    ```
 
 5. Deploy and copy your backend URL
@@ -814,14 +806,7 @@ FlowForge-AI/
 └── README.md
 ```
 
----
 
-## 🎯 Use Cases
-
-- **Product Launches**: Complete go-to-market strategies in 45 seconds
-- **Social Media**: Platform-specific campaigns with hashtag strategies
-- **Rebranding**: Brand positioning and messaging frameworks
-- **API Integration**: Automated campaign generation for marketing platforms
 
 ---
 
